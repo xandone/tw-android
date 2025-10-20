@@ -63,11 +63,7 @@ class HandwritingFragment : Fragment(), DownloadedModelsChangedListener,
         }
 
     override fun onContentChanged() {
-        Log.d("sfsdfsdfsd", "onContentChanged: ")
         val content = strokeManager.content[0].text
-        if (writeCallBack==null){
-            Log.d("sfsdfsdfsd", "onContentChanged: null")
-        }
         writeCallBack?.showWrite(content)
 
         strokeManager.reset()

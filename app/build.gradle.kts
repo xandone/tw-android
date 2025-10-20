@@ -48,7 +48,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation("com.google.mlkit:digital-ink-recognition:18.0.0")
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.blankj:utilcodex:1.31.1")
 
 

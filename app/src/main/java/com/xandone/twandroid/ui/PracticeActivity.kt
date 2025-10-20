@@ -26,7 +26,7 @@ class PracticeActivity : AppCompatActivity() {
             override fun showWrite(content: String) {
                 Log.d("sfsdfsdfsd", "showWrite: $content")
                 _binding.wordTv.text =
-                    MyUtils.addHighLight(_binding.wordTv.text.toString(), content)
+                    MyUtils.addHighLight2(_binding.wordTv.text.toString(), content)
             }
         }
 
