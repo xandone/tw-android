@@ -14,7 +14,9 @@ import com.xandone.twandroid.databinding.ActBaseBinding
 abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflater) -> VB) :
     AppCompatActivity() {
 
-    protected var mBaseBinding: ActBaseBinding? = null
+    private var _baseBinding: ActBaseBinding? = null
+    protected val mBaseBinding
+        get() = _baseBinding!!
 
     private var _binding: VB? = null
     protected val mBinding
@@ -22,15 +24,16 @@ abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBaseBinding = ActBaseBinding.inflate(layoutInflater)
+        _baseBinding = ActBaseBinding.inflate(layoutInflater)
         _binding = initVb(layoutInflater)
-        mBaseBinding!!.frameLayout.addView(mBinding.root)
-        setContentView(mBaseBinding!!.root)
-        initView()
-
-        mBaseBinding!!.toolbar.setNavigationOnClickListener {
+        mBaseBinding.frameLayout.addView(mBinding.root)
+        setContentView(mBaseBinding.root)
+        mBaseBinding.toolbar.setNavigationOnClickListener {
             finish()
         }
+        mBaseBinding.titleTv.text = title
+
+        initView()
     }
 
     abstract fun initView()
@@ -40,8 +43,8 @@ abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflate
         if (_binding != null) {
             _binding = null
         }
-        if (mBaseBinding != null) {
-            mBaseBinding = null
+        if (_baseBinding != null) {
+            _baseBinding = null
         }
     }
 

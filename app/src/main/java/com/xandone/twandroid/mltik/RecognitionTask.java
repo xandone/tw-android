@@ -12,11 +12,6 @@ import com.google.mlkit.vision.digitalink.Ink;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * author: Kevin-Dev
- * date: 2023/2/2
- * desc:
- */
 public class RecognitionTask {
     private static final String TAG = "MLKD.RecognitionTask";
     private final DigitalInkRecognizer recognizer;

@@ -157,6 +157,12 @@ class HandwritingView @JvmOverloads constructor(context: Context, attrs: Attribu
         )
     }
 
+    fun clearCanvas() {
+        clear()
+        invalidate()
+    }
+
+
     override fun onDraw(canvas: Canvas) {
         canvas.drawBitmap(canvasBitmap!!, 0f, 0f, canvasPaint)
         canvas.drawPath(currentStroke, currentStrokePaint)

@@ -15,11 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author: xiao
- * created on: 2025/10/20 17:16
- * description:
- */
+
 public class StrokeManager {
     /** Interface to register to be notified of changes in the recognized content. */
     public interface ContentChangedListener {

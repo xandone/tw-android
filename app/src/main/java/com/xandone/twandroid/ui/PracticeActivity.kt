@@ -12,11 +12,11 @@ import com.xandone.twandroid.utils.MyUtils
  * description:
  */
 class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayoutBinding::inflate) {
-    val transaction = supportFragmentManager.beginTransaction()
     var handwritingFragment: HandwritingFragment? = null
-
+    var isShow = false
 
     override fun initView() {
+        showHandwriting()
         handwritingFragment = HandwritingFragment()
         handwritingFragment!!.writeCallBack = object : WriteCallBack {
             override fun showWrite(content: String) {
@@ -26,9 +26,31 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             }
         }
 
-        mBinding.btn.setOnClickListener {
-            transaction.add(R.id.frame_layout, handwritingFragment!!).commit()
+        mBaseBinding.rightTv.setOnClickListener {
+            isShow = !isShow
+
+            if (isShow) {
+                if (!handwritingFragment!!.isAdded) {
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.frame_layout, handwritingFragment!!).commit()
+                } else {
+                    supportFragmentManager.beginTransaction().show(handwritingFragment!!).commit()
+                }
+            } else {
+                supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
+                handwritingFragment?.reset()
+            }
+            showHandwriting()
         }
+    }
+
+    private fun showHandwriting() {
+        if (isShow) {
+            mBaseBinding.rightTv.text = "键盘"
+        } else {
+            mBaseBinding.rightTv.text = "手写"
+        }
+
     }
 
 

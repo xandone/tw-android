@@ -59,6 +59,11 @@ class HandwritingFragment :
         strokeManager.reset()
     }
 
+    fun reset() {
+        mBinding.handwritingView.clearCanvas()
+        strokeManager.reset()
+    }
+
     override fun onDownloadedModelsChanged(downloadedLanguageTags: MutableSet<String>?) {
     }
 

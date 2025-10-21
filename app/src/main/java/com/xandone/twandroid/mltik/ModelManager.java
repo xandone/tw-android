@@ -16,11 +16,7 @@ import com.google.mlkit.vision.digitalink.DigitalInkRecognizerOptions;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author: xiao
- * created on: 2025/10/20 17:16
- * description:
- */
+
 public class ModelManager {
     private static final String TAG = "MLKD.ModelManager";
     private DigitalInkRecognitionModel model;
