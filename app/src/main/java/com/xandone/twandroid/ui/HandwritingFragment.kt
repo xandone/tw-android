@@ -9,33 +9,23 @@ import androidx.fragment.app.Fragment
 import com.xandone.twandroid.mltik.StrokeManager
 import com.xandone.twandroid.mltik.StrokeManager.DownloadedModelsChangedListener
 import com.xandone.twandroid.databinding.FragHandwringLayoutBinding
+import com.xandone.twandroid.ui.base.BaseVBFragment
 
 /**
  * @author: xiao
  * created on: 2025/10/20 16:04
  * description:
  */
-class HandwritingFragment : Fragment(), DownloadedModelsChangedListener,
+class HandwritingFragment :
+    BaseVBFragment<FragHandwringLayoutBinding>(FragHandwringLayoutBinding::inflate),
+    DownloadedModelsChangedListener,
     StrokeManager.ContentChangedListener {
-    private lateinit var _binding: FragHandwringLayoutBinding
-
     val strokeManager = StrokeManager()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragHandwringLayoutBinding.inflate(layoutInflater)
-        return _binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding.handwritingView.setStrokeManager(strokeManager)
+    override fun initView(view: View?) {
+        mBinding.handwritingView.setStrokeManager(strokeManager)
         initMl()
     }
-
 
     private fun initMl() {
         strokeManager.apply {

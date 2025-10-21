@@ -32,7 +32,6 @@ public class MyUtils {
     }
 
     public static String findKey(String content, String keyword) {
-        Log.d("sfsdfsdfsd", "content:=" + content + "\tkeyword=" + keyword);
         if (ObjectUtils.isEmpty(keyword) || ObjectUtils.isEmpty(content)) {
             return null;
         }
@@ -47,7 +46,6 @@ public class MyUtils {
 
     public static CharSequence addHighLight2(String content, String keyword) {
         keyword = findKey(content, keyword);
-        Log.d("sfsdfsdfsd", "keyword: " + keyword);
         if (ObjectUtils.isEmpty(keyword)) {
             return content;
         }
