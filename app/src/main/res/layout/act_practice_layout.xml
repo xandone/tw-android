@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/phonetic_symbol_tv"
+            android:id="@+id/phonetic0_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="njuːmərəs"
@@ -28,13 +28,11 @@
             android:textColor="@color/text_main_color"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/translation_tv"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trans_rv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="adj.众多的，许多的"
-            android:textColor="@color/text_main_color"
-            android:textSize="16sp" />
+            android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
 

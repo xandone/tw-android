@@ -18,7 +18,6 @@ class App : Application() {
     fun initDb() {
         val dbName = "word.db"
         val isSuccess = DatabaseImporter.importDatabase(this, dbName)
-        Log.d("sfsdfsdfsd", "initDb: $isSuccess");
         if (isSuccess) {
             val version = DatabaseImporter.getDatabaseVersion(this, dbName)
         } else {

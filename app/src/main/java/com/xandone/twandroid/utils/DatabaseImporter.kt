@@ -16,8 +16,6 @@ object DatabaseImporter {
         val dbPath = context.getDatabasePath(dbName).path
         val dbDir = File(dbPath).parentFile
 
-        Log.d("sfsdfsdfsd", "importDatabase: $dbPath")
-
         if (File(dbPath).exists()) {
             return true
         }
