@@ -17,7 +17,6 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
 
     suspend fun loadData0(page: Int, pageSize: Int) {
         withContext(Dispatchers.IO) {
-            Log.d("sfsdfsdfsd", "loadData0: ${Thread.currentThread().name}")
             pagedWordCEt4.addAll(repository.getWordCEt4ByPage(page, pageSize))
         }
     }
