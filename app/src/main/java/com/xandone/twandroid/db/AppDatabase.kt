@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.RoomDatabase
 import androidx.room.Database
 import androidx.room.Room
+import com.xandone.twandroid.db.dao.ErrorWordDao
 import com.xandone.twandroid.db.dao.WordCEt4Dao
+import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.db.entity.WordCEt6
 
@@ -14,9 +16,14 @@ import com.xandone.twandroid.db.entity.WordCEt6
  * description:
  */
 
-@Database(entities = [WordCEt4::class, WordCEt6::class], version = 1, exportSchema = false)
+@Database(
+    entities = [WordCEt4::class, WordCEt6::class, ErrorWord::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun wordCEt4Dao(): WordCEt4Dao
+    abstract fun errorWordDao(): ErrorWordDao
 
     companion object {
         @Volatile
@@ -28,8 +35,8 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "word.db"
-                ).createFromAsset("word.db")
+                    DBInfo.DB_NAME
+                ).createFromAsset(DBInfo.DB_NAME)
                     .build()
                 INSTANCE = instance
                 instance

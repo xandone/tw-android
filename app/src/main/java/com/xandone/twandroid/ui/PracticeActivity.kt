@@ -9,20 +9,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.JsonUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.google.gson.reflect.TypeToken
+import com.xandone.twandroid.ErrorRepository
 import com.xandone.twandroid.R
 import com.xandone.twandroid.WordRepository
 import com.xandone.twandroid.bean.SentencesBean
 import com.xandone.twandroid.bean.TransBean
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
 import com.xandone.twandroid.db.AppDatabase
+import com.xandone.twandroid.db.DBInfo
+import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.utils.MyUtils
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
@@ -63,9 +64,10 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         handwritingFragment!!.writeCallBack = object : WriteCallBack {
             override fun showWrite(keyword: String) {
                 Log.d("sfsdfsdfsd", "showWrite: $keyword")
-                if (!keyword.equals(mBinding.wordTv.text.toString())) {
+                if (keyword != mBinding.wordTv.text.toString()) {
                     mBinding.errorTv.text = keyword
                     mBinding.errorTv.visibility = View.VISIBLE
+                    saveError2db()
                 } else {
                     mBinding.errorTv.text = ""
                     mBinding.errorTv.visibility = View.GONE
@@ -172,6 +174,28 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private fun resetCanvas() {
         handwritingFragment?.reset()
+    }
+
+    private fun saveError2db() {
+        val word = viewModel.mCurrentWord.value
+        val repository = ErrorRepository(AppDatabase.getInstance(this).errorWordDao())
+
+        lifecycleScope.launch {
+            val errorWord = repository.getErrorWordById(word?.wid!!)
+            if (errorWord != null) {
+                errorWord.errorcount++
+                repository.updateErrorWord(errorWord)
+            } else {
+                val temp = ErrorWord(
+                    errortable = DBInfo.TABLE_CET4,
+                    errorwid = word.wid,
+                    errorid = word.id,
+                    word = word.word,
+                    errorcount = 1
+                )
+                repository.insertErrorWord(temp)
+            }
+        }
     }
 
 

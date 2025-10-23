@@ -2,6 +2,7 @@ package com.xandone.twandroid
 
 import android.app.Application
 import android.util.Log
+import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.utils.DatabaseImporter
 
 /**
@@ -16,7 +17,7 @@ class App : Application() {
     }
 
     fun initDb() {
-        val dbName = "word.db"
+        val dbName = DBInfo.DB_NAME
         val isSuccess = DatabaseImporter.importDatabase(this, dbName)
         if (isSuccess) {
             val version = DatabaseImporter.getDatabaseVersion(this, dbName)
