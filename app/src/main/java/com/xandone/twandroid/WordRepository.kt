@@ -3,8 +3,6 @@ package com.xandone.twandroid
 
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.entity.WordCEt4
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  * @author: xiao

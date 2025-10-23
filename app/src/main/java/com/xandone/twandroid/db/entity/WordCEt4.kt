@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.xandone.twandroid.db.DBInfo
 
 /**
  * @author: xiao
@@ -11,7 +12,7 @@ import androidx.room.PrimaryKey
  * description:
  */
 @Entity(
-    tableName = "cet4_words", indices = [
+    tableName = DBInfo.TABLE_CET4, indices = [
         Index(name = "idx_cet4_id", value = ["id"]),
         Index(name = "idx_cet4_word", value = ["word"])
     ]
