@@ -6,6 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.entity.WordCEt4
+import com.xandone.twandroid.db.entity.WordCEt6
 
 /**
  * @author: xiao
@@ -13,19 +14,25 @@ import com.xandone.twandroid.db.entity.WordCEt4
  * description:
  */
 
-@Database(entities = [WordCEt4::class], version = 1, exportSchema = false)
+@Database(entities = [WordCEt4::class, WordCEt6::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun wordCEt4Dao(): WordCEt4Dao
 
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-                    .allowMainThreadQueries() // 测试用，正式环境避免
+                // 预填充数据库
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "word.db"
+                ).createFromAsset("word.db")
                     .build()
-                    .also { INSTANCE = it }
+                INSTANCE = instance
+                instance
             }
         }
     }

@@ -59,18 +59,9 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private fun initWords() {
         viewModel = CEt4ViewModel(WordRepository(AppDatabase.getInstance(this).wordCEt4Dao()))
-
-//        lifecycleScope.launch {
-//            Log.d("sfsdfsdfsd", "showHandwriting:开始")
-//            viewModel.pagedWordCEt4.collectLatest {
-//                Log.d("sfsdfsdfsd", "showHandwriting: ${GsonUtils.toJson(it)}")
-//            }
-//        }
-
-        val respository = WordRepository(AppDatabase.getInstance(this).wordCEt4Dao())
         lifecycleScope.launch {
-            val hasData = respository.checkDataExists()
-            Log.d("sfsdfsdfsd", "数据库是否有数据：$hasData")
+            viewModel.loadData0(1, 10)
+            Log.d("sfsdfsdfsd", "initWords: ${GsonUtils.toJson(viewModel.pagedWordCEt4)}")
         }
     }
 
