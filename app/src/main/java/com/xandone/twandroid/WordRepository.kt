@@ -1,11 +1,10 @@
 package com.xandone.twandroid
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.entity.WordCEt4
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author: xiao
@@ -13,18 +12,19 @@ import kotlinx.coroutines.flow.Flow
  * description:
  */
 class WordRepository(private val dao: WordCEt4Dao) {
-    fun getPagedWordCEt4(): Flow<PagingData<WordCEt4>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20, // 每页数量
-                prefetchDistance = 5, // 预加载触发距离
-                enablePlaceholders = false // 不使用占位符
-            ),
-            pagingSourceFactory = { dao.getWordCEt4ByPage() }
-        ).flow
+
+    suspend fun getWordCEt4ByPage(page: Int, pageSize: Int): List<WordCEt4> {
+        val validPage = if (page < 1) 1 else page
+        val validPageSize = if (pageSize < 1) 20 else pageSize
+        // 计算偏移量：跳过 (page-1)*pageSize 条数据
+        val offset = (validPage - 1) * validPageSize
+
+        return dao.getWordCEt4ByPage(validPageSize, offset)
     }
 
-     fun checkDataExists(): Boolean {
-        return dao.count() > 0
+    suspend fun checkDataExists(): Int {
+        return dao.count()
     }
+
+
 }

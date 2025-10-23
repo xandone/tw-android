@@ -1,25 +1,24 @@
 package com.xandone.twandroid.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.xandone.twandroid.WordRepository
 import com.xandone.twandroid.db.entity.WordCEt4
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author: xiao
  * created on: 2025/10/22 16:35
  * description:
  */
-class CEt4ViewModel(repository: WordRepository) : ViewModel() {
-    val pagedWordCEt4: Flow<PagingData<WordCEt4>> = repository.getPagedWordCEt4()
-        .cachedIn(viewModelScope)
+class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
+    val pagedWordCEt4 = mutableListOf<WordCEt4>()
 
-    init {
-        viewModelScope.launch {
+    suspend fun loadData0(page: Int, pageSize: Int) {
+        withContext(Dispatchers.IO) {
+            Log.d("sfsdfsdfsd", "loadData0: ${Thread.currentThread().name}")
+            pagedWordCEt4.addAll(repository.getWordCEt4ByPage(page, pageSize))
         }
     }
 }

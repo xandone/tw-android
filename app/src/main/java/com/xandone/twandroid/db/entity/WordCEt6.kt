@@ -11,12 +11,12 @@ import androidx.room.PrimaryKey
  * description:
  */
 @Entity(
-    tableName = "cet4_words", indices = [
-        Index(name = "idx_cet4_id", value = ["id"]),
-        Index(name = "idx_cet4_word", value = ["word"])
+    tableName = "cet6_words", indices = [
+        Index(name = "idx_cet6_id", value = ["id"]),
+        Index(name = "idx_cet6_word", value = ["word"])
     ]
 )
-class WordCEt4(
+class WordCEt6(
     @PrimaryKey(autoGenerate = true) val wid: Int?,
     val id: Int?,
     val word: String?,

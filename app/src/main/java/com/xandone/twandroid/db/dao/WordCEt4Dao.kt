@@ -12,9 +12,10 @@ import com.xandone.twandroid.db.entity.WordCEt4
  */
 @Dao
 interface WordCEt4Dao {
-    @Query("select * from cet4_words order by wid asc")
-    fun getWordCEt4ByPage(): PagingSource<Int, WordCEt4>
+    @Query("SELECT * FROM cet4_words ORDER BY wid ASC LIMIT :pageSize OFFSET :offset")
+    suspend fun getWordCEt4ByPage(pageSize: Int, offset: Int): List<WordCEt4>
 
-    @Query("SELECT COUNT(*) FROM cet4_words")
-    fun count(): Int
+    @Query("select count(*) from cet4_words")
+    suspend fun count(): Int
+
 }
