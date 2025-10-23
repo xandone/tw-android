@@ -34,7 +34,6 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
         if (_currentIndex.value!! < pagedWordCEt4.size) {
             _currentIndex.value = _currentIndex.value!! + 1
             mCurrentWord.value = pagedWordCEt4[_currentIndex.value!!]
-            Log.d("sfsdfsdfsd", "changeWord: ${mCurrentWord.value?.word}")
         }
     }
 }
