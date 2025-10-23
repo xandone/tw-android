@@ -13,6 +13,7 @@ import com.xandone.twandroid.utils.DatabaseImporter
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        instance = this
         initDb()
     }
 
@@ -23,5 +24,9 @@ class App : Application() {
             val version = DatabaseImporter.getDatabaseVersion(this, dbName)
         } else {
         }
+    }
+
+    companion object {
+        lateinit var instance: App
     }
 }
