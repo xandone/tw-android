@@ -1,9 +1,11 @@
 package com.xandone.twandroid.ui
 
 import android.content.Context
+import android.graphics.Paint
 import android.util.Log
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.JsonUtils
@@ -12,6 +14,7 @@ import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.google.gson.reflect.TypeToken
 import com.xandone.twandroid.R
 import com.xandone.twandroid.WordRepository
+import com.xandone.twandroid.bean.SentencesBean
 import com.xandone.twandroid.bean.TransBean
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
 import com.xandone.twandroid.db.AppDatabase
@@ -48,7 +51,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 }
             } else {
                 supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
-                handwritingFragment?.reset()
+                resetCanvas()
             }
             showHandwriting()
         }
@@ -61,11 +64,13 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 Log.d("sfsdfsdfsd", "showWrite: $content")
                 mBinding.wordTv.text =
                     MyUtils.addHighLight2(mBinding.wordTv.text.toString(), content)
+                resetCanvas()
             }
         }
     }
 
     private fun initWords() {
+        mBinding.errorTv.paintFlags = mBinding.errorTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         viewModel = CEt4ViewModel(WordRepository(AppDatabase.getInstance(this).wordCEt4Dao()))
         val rvAdapter = object : BaseQuickAdapter<TransBean, QuickViewHolder>() {
 
@@ -82,16 +87,42 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 position: Int,
                 item: TransBean?
             ) {
-                holder.setText(R.id.pos_tv, item?.pos)
+                holder.setText(
+                    R.id.pos_tv,
+                    MyUtils.addHighLight(item?.pos, viewModel.pagedWordCEt4[0].word)
+                )
+                holder.setText(R.id.cn_tv, item?.cn)
+            }
+
+        }
+
+        val rvAdapter2 = object : BaseQuickAdapter<SentencesBean, QuickViewHolder>() {
+
+            override fun onCreateViewHolder(
+                context: Context,
+                parent: ViewGroup,
+                viewType: Int
+            ): QuickViewHolder {
+                return QuickViewHolder(R.layout.item_sentences, parent)
+            }
+
+            override fun onBindViewHolder(
+                holder: QuickViewHolder,
+                position: Int,
+                item: SentencesBean?
+            ) {
+                holder.setText(
+                    R.id.pos_tv,
+                    MyUtils.addHighLight(item?.c, viewModel.pagedWordCEt4[0].word)
+                )
                 holder.setText(R.id.cn_tv, item?.cn)
             }
 
         }
 
 
-
         mBinding.transRv.apply {
-            adapter = rvAdapter
+            adapter = ConcatAdapter(rvAdapter, rvAdapter2)
             layoutManager = LinearLayoutManager(this@PracticeActivity)
         }
 
@@ -107,7 +138,13 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 viewModel.pagedWordCEt4[0].trans,
                 object : TypeToken<List<TransBean>>() {}.type
             )
+
+            val sentences: List<SentencesBean> = GsonUtils.fromJson(
+                viewModel.pagedWordCEt4[0].sentences,
+                object : TypeToken<List<SentencesBean>>() {}.type
+            )
             rvAdapter.submitList(trans)
+            rvAdapter2.submitList(sentences)
         }
     }
 
@@ -118,6 +155,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             mBaseBinding.rightTv.text = "手写"
         }
 
+    }
+
+
+    private fun resetCanvas() {
+        handwritingFragment?.reset()
     }
 
 
