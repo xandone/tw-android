@@ -3,6 +3,7 @@ package com.xandone.twandroid.ui
 import android.content.Context
 import android.graphics.Paint
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
@@ -60,10 +61,18 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private fun initFragment() {
         handwritingFragment = HandwritingFragment()
         handwritingFragment!!.writeCallBack = object : WriteCallBack {
-            override fun showWrite(content: String) {
-                Log.d("sfsdfsdfsd", "showWrite: $content")
+            override fun showWrite(keyword: String) {
+                Log.d("sfsdfsdfsd", "showWrite: $keyword")
+                if (!keyword.equals(mBinding.wordTv.text.toString())) {
+                    mBinding.errorTv.text = keyword
+                    mBinding.errorTv.visibility = View.VISIBLE
+                } else {
+                    mBinding.errorTv.text = ""
+                    mBinding.errorTv.visibility = View.GONE
+                    viewModel.changeWord()
+                }
                 mBinding.wordTv.text =
-                    MyUtils.addHighLight2(mBinding.wordTv.text.toString(), content)
+                    MyUtils.addHighLight2(mBinding.wordTv.text.toString(), keyword)
                 resetCanvas()
             }
         }
@@ -89,7 +98,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             ) {
                 holder.setText(
                     R.id.pos_tv,
-                    MyUtils.addHighLight(item?.pos, viewModel.pagedWordCEt4[0].word)
+                    MyUtils.addHighLight(item?.pos, viewModel.mCurrentWord.value?.word)
                 )
                 holder.setText(R.id.cn_tv, item?.cn)
             }
@@ -113,7 +122,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             ) {
                 holder.setText(
                     R.id.pos_tv,
-                    MyUtils.addHighLight(item?.c, viewModel.pagedWordCEt4[0].word)
+                    MyUtils.addHighLight(item?.c, viewModel.mCurrentWord.value?.word)
                 )
                 holder.setText(R.id.cn_tv, item?.cn)
             }
@@ -129,20 +138,23 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
         lifecycleScope.launch {
             viewModel.loadData0(1, 10)
-            Log.d("sfsdfsdfsd", "initWords: ${GsonUtils.toJson(viewModel.pagedWordCEt4)}")
+        }
 
-            mBinding.phonetic0Tv.text = viewModel.pagedWordCEt4[0].phonetic0
-            mBinding.wordTv.text = viewModel.pagedWordCEt4[0].word
+        viewModel.mCurrentWord.observe(this) {
+            mBinding.phonetic0Tv.text =
+                String.format("[%s]", it.phonetic0)
+            mBinding.wordTv.text = it.word
 
             val trans: List<TransBean> = GsonUtils.fromJson(
-                viewModel.pagedWordCEt4[0].trans,
+                it.trans,
                 object : TypeToken<List<TransBean>>() {}.type
             )
 
             val sentences: List<SentencesBean> = GsonUtils.fromJson(
-                viewModel.pagedWordCEt4[0].sentences,
+                it.sentences,
                 object : TypeToken<List<SentencesBean>>() {}.type
             )
+
             rvAdapter.submitList(trans)
             rvAdapter2.submitList(sentences)
         }

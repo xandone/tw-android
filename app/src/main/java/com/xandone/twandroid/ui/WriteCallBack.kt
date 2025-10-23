@@ -6,5 +6,5 @@ package com.xandone.twandroid.ui
  * description:
  */
 interface WriteCallBack {
-    fun showWrite(content: String)
+    fun showWrite(keyword: String)
 }

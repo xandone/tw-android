@@ -36,12 +36,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/error_color"
             android:textSize="20sp"
+            android:visibility="gone"
             tools:text="error" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trans_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
