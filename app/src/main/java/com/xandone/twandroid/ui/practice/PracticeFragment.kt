@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.ObjectUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.google.gson.reflect.TypeToken
@@ -36,6 +37,8 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
 
 //    private lateinit var viewModel: CEt4ViewModel
 
+    private var errorWord: String? = null
+
     override fun initView(view: View?) {
 //        viewModel = ViewModelProvider(requireActivity())[CEt4ViewModel::class.java]
 
@@ -43,8 +46,14 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
     }
 
     private fun initWords() {
-
         mBinding.errorTv.paintFlags = mBinding.errorTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        if (ObjectUtils.isNotEmpty(errorWord)) {
+            mBinding.errorTv.text = errorWord
+            mBinding.errorTv.visibility = View.VISIBLE
+        } else {
+            mBinding.errorTv.text = ""
+            mBinding.errorTv.visibility = View.GONE
+        }
 
         val rvAdapter = object : BaseQuickAdapter<TransBean, QuickViewHolder>() {
 
@@ -121,13 +130,14 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
 
     fun changeWord(keyword: String) {
         if (keyword != wordCEt4.word) {
-            mBinding.errorTv.text = keyword
+            errorWord = keyword
             mBinding.errorTv.visibility = View.VISIBLE
             saveError2db()
         } else {
-            mBinding.errorTv.text = ""
+            errorWord = ""
             mBinding.errorTv.visibility = View.GONE
         }
+        mBinding.errorTv.text = errorWord
         mBinding.wordTv.text =
             MyUtils.addHighLight2(mBinding.wordTv.text.toString(), keyword)
     }
