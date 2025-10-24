@@ -11,7 +11,8 @@
       "url": "CET4_T.json",
       "length": 2607,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "cet4_words"
     },
     {
       "id": "cet6",
@@ -24,7 +25,8 @@
       "url": "CET6_T.json",
       "length": 2345,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "cet6_words"
     },
     {
       "id": "xinghuoqiaoji_4",
@@ -1898,7 +1900,10 @@
         "通用"
       ],
       "words": [
-        "private","fuck","add","remove"
+        "private",
+        "fuck",
+        "add",
+        "remove"
       ],
       "url": "GaoKaoZhenTiHeXinGaoPin.json",
       "length": 799,

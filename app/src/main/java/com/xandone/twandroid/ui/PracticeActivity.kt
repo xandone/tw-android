@@ -8,11 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.ObjectUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.R
 import com.xandone.twandroid.WordRepository
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
-import com.xandone.twandroid.db.AppDatabase
+import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
 import com.xandone.twandroid.ui.practice.PracticeFragment
@@ -31,6 +32,8 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private val mFragmentList = mutableListOf<PracticeFragment>()
 
+    private var tablename: String? = null
+
     override fun initView() {
         immersionBar {
             statusBarDarkFont(true)
@@ -39,6 +42,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             fitsSystemWindows(true)
             titleBar(mBaseBinding.toolbar)
         }
+        tablename = intent.getStringExtra("key_tableName")
+        if (ObjectUtils.isEmpty(tablename)) {
+            tablename = DBInfo.TABLE_CET4
+        }
+
         mBaseBinding.rightTv.setTextColor(ColorUtils.getColor(R.color.btn_color))
         showHandwriting()
         initWords()
@@ -120,7 +128,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private fun initWords() {
         val factory =
-            CEt4ViewModelFactory(WordRepository(AppDatabase.getInstance(this).wordCEt4Dao()))
+            CEt4ViewModelFactory(WordRepository())
         viewModel = ViewModelProvider(this, factory)[CEt4ViewModel::class.java]
 
         lifecycleScope.launch {
