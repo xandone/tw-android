@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.GsonUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.google.gson.reflect.TypeToken
+import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.ErrorRepository
 import com.xandone.twandroid.R
 import com.xandone.twandroid.WordRepository
@@ -37,6 +38,13 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private lateinit var viewModel: CEt4ViewModel
 
     override fun initView() {
+        immersionBar {
+            statusBarDarkFont(false)
+            statusBarColor(R.color.purple_500)
+            navigationBarColor(R.color.white)
+            fitsSystemWindows(true)
+            titleBar(mBaseBinding.toolbar)
+        }
         showHandwriting()
         initWords()
         initFragment()

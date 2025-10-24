@@ -62,6 +62,9 @@ dependencies {
     implementation("io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.2")
     implementation("com.google.code.gson:gson:2.10.1")
 
+    //沉浸式
+    implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")
+    implementation("com.geyifeng.immersionbar:immersionbar-ktx:3.2.2")
 
 
 }

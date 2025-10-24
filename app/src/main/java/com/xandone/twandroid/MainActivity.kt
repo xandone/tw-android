@@ -39,6 +39,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         mBinding.viewPage2.apply {
+            isUserInputEnabled = false
             adapter = object : FragmentStateAdapter(this@MainActivity) {
                 override fun getItemCount(): Int {
                     return mFragments.size

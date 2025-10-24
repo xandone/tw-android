@@ -1,6 +1,7 @@
 package com.xandone.twandroid.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,11 @@ import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.xandone.twandroid.R
 import com.xandone.twandroid.bean.WordHomeBean
 import com.xandone.twandroid.databinding.FragHomeBinding
+import com.xandone.twandroid.ui.PracticeActivity
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.views.GridSpacingItemDecoration
 import kotlinx.coroutines.async
+import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.launch
 
 /**
@@ -27,6 +30,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
     private lateinit var homeViewModel: HomeViewModel
     override fun initView(view: View?) {
+
         val rvAdapter = object : BaseQuickAdapter<WordHomeBean, QuickViewHolder>() {
             override fun onBindViewHolder(
                 holder: QuickViewHolder,
@@ -53,13 +57,26 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
             layoutManager = GridLayoutManager(context, 2)
             addItemDecoration(GridSpacingItemDecoration(2, SizeUtils.dp2px(6f), true))
         }
+        rvAdapter.setOnItemClickListener { adapter, view, position ->
+            run {
+                startActivity(Intent(context, PracticeActivity::class.java))
+            }
+        }
 
         homeViewModel = HomeViewModel()
         lifecycleScope.launch {
             homeViewModel.loadData0()
             rvAdapter.submitList(homeViewModel.firstList)
         }
+    }
 
 
+    override fun onResume() {
+        super.onResume()
+        immersionBar {
+            statusBarDarkFont(true)
+            statusBarColor(R.color.app_bg_color)
+            navigationBarColor(R.color.white)
+        }
     }
 }
