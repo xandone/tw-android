@@ -19,22 +19,21 @@ import kotlinx.coroutines.withContext
 class HomeViewModel : ViewModel() {
     private val _list = mutableListOf<List<WordHomeBean>>()
     val list = _list
+    val firstList = mutableListOf<WordHomeBean>()
 
-    fun loadData0() {
-        viewModelScope.launch {
-            try {
-                val jsonString = readAssetFile("dict-list.json")
-                // 解析二维数组
-                val wordList: List<List<WordHomeBean>> = GsonUtils.fromJson(
-                    jsonString,
-                    object : TypeToken<List<List<WordHomeBean>>>() {}.type
-                )
-                _list.clear()
-                _list.addAll(wordList)  // 使用 addAll 而不是 add
-                Log.d("HomeViewModel", "list: ${_list.size}")
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "读取JSON文件失败", e)
-            }
+    suspend fun loadData0() {
+        try {
+            val jsonString = readAssetFile("dict-list.json")
+            // 解析二维数组
+            val wordList: List<List<WordHomeBean>> = GsonUtils.fromJson(
+                jsonString,
+                object : TypeToken<List<List<WordHomeBean>>>() {}.type
+            )
+            _list.clear()
+            _list.addAll(wordList)  // 使用 addAll 而不是 add
+            firstList.addAll(_list[0])
+        } catch (e: Exception) {
+            Log.e("HomeViewModel", "读取JSON文件失败", e)
         }
     }
 

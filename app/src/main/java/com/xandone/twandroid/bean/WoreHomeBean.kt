@@ -7,4 +7,6 @@ package com.xandone.twandroid.bean
  */
 data class WordHomeBean(
     val name: String,
+    val description: String,
+    val length: String,
 )
