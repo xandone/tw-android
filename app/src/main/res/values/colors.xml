@@ -16,4 +16,5 @@
     <color name="error_color">#f00</color>
     <color name="mask_color">#33cd976e</color>
     <color name="ripple_color">#1f555555</color>
+    <color name="btn_color">#2f54eb</color>
 </resources>
