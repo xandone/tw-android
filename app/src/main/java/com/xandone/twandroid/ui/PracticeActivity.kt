@@ -17,6 +17,7 @@ import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
 import com.xandone.twandroid.ui.practice.PracticeFragment
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
  * @author: xiao
@@ -55,12 +56,22 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         }
 
         viewModel.mCurrentWordIndex.observe(this) {
+            mBinding.countTv.text = String.format(
+                Locale.getDefault(),
+                "%d/%d",
+                viewModel.mCurrentWordIndex.value!! + 1,
+                viewModel.pagedWordCEt4.size
+            )
             if (viewModel.mCurrentWordIndex.value == 0) {
                 mBinding.btnPre.visibility = View.GONE
             } else {
                 mBinding.btnPre.visibility = View.VISIBLE
                 mBinding.btnPre.text =
-                    viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! - 1].word
+                    String.format(
+                        Locale.getDefault(),
+                        "<- %s",
+                        viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! - 1].word
+                    )
             }
 
             if (viewModel.mCurrentWordIndex.value == viewModel.pagedWordCEt4.size - 1 || viewModel.pagedWordCEt4.size <= 1) {
@@ -68,7 +79,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             } else {
                 mBinding.btnNext.visibility = View.VISIBLE
                 mBinding.btnNext.text =
-                    viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! + 1].word
+                    String.format(
+                        Locale.getDefault(),
+                        "%s ->",
+                        viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! + 1].word
+                    )
             }
         }
 
@@ -130,7 +145,6 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        Log.d("sfsdfsdfsd", "onPageSelected: $position")
                         viewModel.mCurrentWordIndex.value = position
                         viewModel.mCurrentWord.value = viewModel.pagedWordCEt4[position]
                     }
