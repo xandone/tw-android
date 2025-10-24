@@ -144,10 +144,10 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
 
     private fun saveError2db() {
         val word = wordCEt4
-        val repository = ErrorRepository(AppDatabase.getInstance(requireActivity()).errorWordDao())
+        val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
 
         lifecycleScope.launch {
-            val errorWord = repository.getErrorWordById(word?.wid!!)
+            val errorWord = repository.getErrorWordById(word.wid!!)
             if (errorWord != null) {
                 errorWord.errorcount++
                 repository.updateErrorWord(errorWord)

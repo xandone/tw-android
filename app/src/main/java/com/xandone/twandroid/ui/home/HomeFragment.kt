@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
@@ -18,7 +17,6 @@ import com.xandone.twandroid.databinding.FragHomeBinding
 import com.xandone.twandroid.ui.PracticeActivity
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.views.GridSpacingItemDecoration
-import kotlinx.coroutines.async
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.launch
 
@@ -59,7 +57,11 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
         }
         rvAdapter.setOnItemClickListener { adapter, view, position ->
             run {
-                startActivity(Intent(context, PracticeActivity::class.java))
+                val intent = Intent(context, PracticeActivity::class.java).putExtra(
+                    "key_tableName",
+                    homeViewModel.firstList[position].tablename
+                )
+                startActivity(intent)
             }
         }
 

@@ -1,8 +1,8 @@
 package com.xandone.twandroid.db.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
+import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.WordCEt4
 
 /**
@@ -12,10 +12,10 @@ import com.xandone.twandroid.db.entity.WordCEt4
  */
 @Dao
 interface WordCEt4Dao {
-    @Query("SELECT * FROM cet4_words ORDER BY wid ASC LIMIT :pageSize OFFSET :offset")
+    @Query("select * from cet4_words order by wid asc limit :pageSize offset :offset")
     suspend fun getWordCEt4ByPage(pageSize: Int, offset: Int): List<WordCEt4>
 
-    @Query("select count(*) from cet4_words")
+    @Query("select count(*) from ${DBInfo.TABLE_CET4}")
     suspend fun count(): Int
 
 }
