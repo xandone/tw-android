@@ -1,15 +1,23 @@
 package com.xandone.twandroid.ui.home
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.xandone.twandroid.R
 import com.xandone.twandroid.bean.WordHomeBean
 import com.xandone.twandroid.databinding.FragHomeBinding
 import com.xandone.twandroid.ui.base.BaseVBFragment
+import com.xandone.twandroid.views.GridSpacingItemDecoration
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 /**
  * @author: xiao
@@ -17,6 +25,7 @@ import com.xandone.twandroid.ui.base.BaseVBFragment
  * description:
  */
 class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
+    private lateinit var homeViewModel: HomeViewModel
     override fun initView(view: View?) {
         val rvAdapter = object : BaseQuickAdapter<WordHomeBean, QuickViewHolder>() {
             override fun onBindViewHolder(
@@ -25,6 +34,8 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
                 item: WordHomeBean?
             ) {
                 holder.setText(R.id.item_name_tv, item?.name)
+                holder.setText(R.id.item_description_tv, item?.description)
+                holder.setText(R.id.item_length_tv, item?.length)
             }
 
             override fun onCreateViewHolder(
@@ -39,9 +50,16 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
 
         mBinding.recycler.apply {
             adapter = rvAdapter
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(context, 2)
+            addItemDecoration(GridSpacingItemDecoration(2, SizeUtils.dp2px(6f), true))
         }
 
-        HomeViewModel().loadData0()
+        homeViewModel = HomeViewModel()
+        lifecycleScope.launch {
+            homeViewModel.loadData0()
+            rvAdapter.submitList(homeViewModel.firstList)
+        }
+
+
     }
 }

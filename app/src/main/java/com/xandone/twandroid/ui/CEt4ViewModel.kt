@@ -26,14 +26,18 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
         _currentIndex.value = 0
         withContext(Dispatchers.IO) {
             pagedWordCEt4.addAll(repository.getWordCEt4ByPage(page, pageSize))
+            Log.d("CEt4ViewModel", "1111: .....")
+            Thread.sleep(5000)
+            Log.d("CEt4ViewModel", "22222: .....")
         }
-        mCurrentWord.value = pagedWordCEt4[_currentIndex.value!!]
+        Log.d("CEt4ViewModel", "33333: .....")
+        _currentWord.value = pagedWordCEt4[_currentIndex.value!!]
     }
 
     fun changeWord() {
         if (_currentIndex.value!! < pagedWordCEt4.size) {
             _currentIndex.value = _currentIndex.value!! + 1
-            mCurrentWord.value = pagedWordCEt4[_currentIndex.value!!]
+            _currentWord.value = pagedWordCEt4[_currentIndex.value!!]
         }
     }
 }
