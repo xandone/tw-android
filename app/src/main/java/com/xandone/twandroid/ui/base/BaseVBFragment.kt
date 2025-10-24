@@ -18,14 +18,13 @@ abstract class BaseVBFragment<VB : ViewBinding>(private val initVb: (LayoutInfla
     protected val mBinding
         get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = initVb(inflater)
-        return mBinding.root
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,37 +1,21 @@
 package com.xandone.twandroid.ui
 
-import android.content.Context
-import android.graphics.Paint
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
-import com.blankj.utilcode.util.GsonUtils
-import com.chad.library.adapter4.BaseQuickAdapter
-import com.chad.library.adapter4.viewholder.QuickViewHolder
-import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ktx.immersionBar
-import com.xandone.twandroid.ErrorRepository
 import com.xandone.twandroid.R
 import com.xandone.twandroid.WordRepository
-import com.xandone.twandroid.bean.SentencesBean
-import com.xandone.twandroid.bean.TransBean
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
 import com.xandone.twandroid.db.AppDatabase
-import com.xandone.twandroid.db.DBInfo
-import com.xandone.twandroid.db.entity.ErrorWord
-import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
 import com.xandone.twandroid.ui.practice.PracticeFragment
-import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
 
 /**
@@ -59,22 +43,35 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         initWords()
         initFragment()
 
-        mBaseBinding.rightTv.setOnClickListener {
-            isShow = !isShow
-
-            if (isShow) {
-                if (!handwritingFragment!!.isAdded) {
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.frame_layout, handwritingFragment!!).commit()
-                } else {
-                    supportFragmentManager.beginTransaction().show(handwritingFragment!!).commit()
-                }
-            } else {
-                supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
-                resetCanvas()
+        mBinding.btnPre.setOnClickListener {
+            if (viewModel.mCurrentWordIndex.value!! > 0) {
+                mBinding.viewPage2.currentItem = viewModel.mCurrentWordIndex.value!! - 1
             }
-            showHandwriting()
         }
+        mBinding.btnNext.setOnClickListener {
+            if (viewModel.mCurrentWordIndex.value!! < viewModel.pagedWordCEt4.size - 1) {
+                mBinding.viewPage2.currentItem = viewModel.mCurrentWordIndex.value!! + 1
+            }
+        }
+
+        viewModel.mCurrentWordIndex.observe(this) {
+            if (viewModel.mCurrentWordIndex.value == 0) {
+                mBinding.btnPre.visibility = View.GONE
+            } else {
+                mBinding.btnPre.visibility = View.VISIBLE
+                mBinding.btnPre.text =
+                    viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! - 1].word
+            }
+
+            if (viewModel.mCurrentWordIndex.value == viewModel.pagedWordCEt4.size - 1 || viewModel.pagedWordCEt4.size <= 1) {
+                mBinding.btnNext.visibility = View.GONE
+            } else {
+                mBinding.btnNext.visibility = View.VISIBLE
+                mBinding.btnNext.text =
+                    viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!! + 1].word
+            }
+        }
+
     }
 
     private fun initFragment() {
@@ -86,6 +83,23 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 mFragmentList[viewModel.mCurrentWordIndex.value!!].changeWord(keyword)
                 resetCanvas()
             }
+        }
+
+        mBaseBinding.rightTv.setOnClickListener {
+            isShow = !isShow
+
+            if (isShow) {
+                if (!handwritingFragment!!.isAdded) {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.content_layout, handwritingFragment!!).commit()
+                } else {
+                    supportFragmentManager.beginTransaction().show(handwritingFragment!!).commit()
+                }
+            } else {
+                supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
+                resetCanvas()
+            }
+            showHandwriting()
         }
     }
 
@@ -116,6 +130,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
+                        Log.d("sfsdfsdfsd", "onPageSelected: $position")
                         viewModel.mCurrentWordIndex.value = position
                         viewModel.mCurrentWord.value = viewModel.pagedWordCEt4[position]
                     }
