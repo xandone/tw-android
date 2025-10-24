@@ -16,24 +16,15 @@ import kotlinx.coroutines.withContext
 class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
     val pagedWordCEt4 = mutableListOf<WordCEt4>()
 
-    private val _currentIndex = MutableLiveData<Int>()
-    val mCurrentWordIndex = _currentIndex
-
-    private val _currentWord = MutableLiveData<WordCEt4>()
-    val mCurrentWord = _currentWord
+    val mCurrentWordIndex = MutableLiveData<Int>()
+    val mCurrentWord = MutableLiveData<WordCEt4>()
 
     suspend fun loadData0(page: Int, pageSize: Int) {
-        _currentIndex.value = 0
         withContext(Dispatchers.IO) {
             pagedWordCEt4.addAll(repository.getWordCEt4ByPage(page, pageSize))
         }
-        _currentWord.value = pagedWordCEt4[_currentIndex.value!!]
+        mCurrentWordIndex.value = 0
+        mCurrentWord.value = pagedWordCEt4[mCurrentWordIndex.value!!]
     }
 
-    fun changeWord() {
-        if (_currentIndex.value!! < pagedWordCEt4.size) {
-            _currentIndex.value = _currentIndex.value!! + 1
-            _currentWord.value = pagedWordCEt4[_currentIndex.value!!]
-        }
-    }
 }
