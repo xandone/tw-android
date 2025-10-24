@@ -44,6 +44,8 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private var isShow = false
     private lateinit var viewModel: CEt4ViewModel
 
+    private val mFragmentList = mutableListOf<PracticeFragment>()
+
     override fun initView() {
         immersionBar {
             statusBarDarkFont(true)
@@ -103,7 +105,6 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             mBinding.viewPage2.apply {
                 adapter = object : FragmentStateAdapter(this@PracticeActivity) {
                     override fun getItemCount(): Int {
-                        Log.d("sfsdfsdfsd", "getItemCount: ${mFragmentList.size}")
                         return mFragmentList.size
                     }
 
@@ -125,8 +126,6 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         }
 
     }
-
-    private val mFragmentList = mutableListOf<PracticeFragment>()
 
     private fun showHandwriting() {
         if (isShow) {
