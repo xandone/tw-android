@@ -1,11 +1,6 @@
 package com.xandone.twandroid.ui
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.xandone.twandroid.mltik.StrokeManager
 import com.xandone.twandroid.mltik.StrokeManager.DownloadedModelsChangedListener
 import com.xandone.twandroid.databinding.FragHandwringLayoutBinding
