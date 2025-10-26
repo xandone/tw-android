@@ -11,9 +11,9 @@ import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.ObjectUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.R
-import com.xandone.twandroid.WordRepository
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
 import com.xandone.twandroid.db.DBInfo
+import com.xandone.twandroid.repository.WordRepository
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
 import com.xandone.twandroid.ui.practice.PracticeFragment
@@ -105,6 +105,9 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
                 mFragmentList[viewModel.mCurrentWordIndex.value!!].changeWord(keyword)
                 resetCanvas()
+                if (keyword == viewModel.mCurrentWord.value!!.word && viewModel.mCurrentWordIndex.value!! < mFragmentList.size) {
+                    mBinding.viewPage2.currentItem = viewModel.mCurrentWordIndex.value!! + 1
+                }
             }
         }
 

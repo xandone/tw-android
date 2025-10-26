@@ -3,8 +3,8 @@ package com.xandone.twandroid.ui
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.xandone.twandroid.WordRepository
 import com.xandone.twandroid.db.entity.WordCEt4
+import com.xandone.twandroid.repository.WordRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

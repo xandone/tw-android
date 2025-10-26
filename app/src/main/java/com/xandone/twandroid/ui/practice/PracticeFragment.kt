@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.ObjectUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.google.gson.reflect.TypeToken
-import com.xandone.twandroid.ErrorRepository
 import com.xandone.twandroid.R
 import com.xandone.twandroid.bean.SentencesBean
 import com.xandone.twandroid.bean.TransBean
@@ -22,6 +21,7 @@ import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.WordCEt4
+import com.xandone.twandroid.repository.ErrorRepository
 import com.xandone.twandroid.ui.CEt4ViewModel
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.utils.MyUtils

@@ -13,6 +13,10 @@ import com.xandone.twandroid.ui.base.BaseVBFragment
  */
 class MineFragment : BaseVBFragment<FragMineBinding>(FragMineBinding::inflate) {
     override fun initView(view: View?) {
+
+        mBinding.statisticCv.setOnClickListener{
+
+        }
     }
 
 

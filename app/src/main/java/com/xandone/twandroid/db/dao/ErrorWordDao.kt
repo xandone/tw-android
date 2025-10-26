@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.ErrorWord
 
 /**
@@ -19,7 +20,7 @@ interface ErrorWordDao {
     @Update
     suspend fun updateErrorWord(errorWord: ErrorWord)
 
-    @Query("select * from error_words where errorwid = :errorwid limit 1")
+    @Query("select * from ${DBInfo.TABLE_ERROR_WORD} where errorwid = :errorwid limit 1")
     suspend fun getErrorWordById(errorwid: Int): ErrorWord?
 
 }
