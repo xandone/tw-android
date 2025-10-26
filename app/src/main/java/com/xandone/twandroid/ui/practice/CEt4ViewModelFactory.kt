@@ -2,7 +2,7 @@ package com.xandone.twandroid.ui.practice
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.xandone.twandroid.WordRepository
+import com.xandone.twandroid.repository.WordRepository
 import com.xandone.twandroid.ui.CEt4ViewModel
 
 /**

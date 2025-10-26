@@ -1,4 +1,4 @@
-package com.xandone.twandroid
+package com.xandone.twandroid.repository
 
 
 import com.xandone.twandroid.db.AppDatabase
