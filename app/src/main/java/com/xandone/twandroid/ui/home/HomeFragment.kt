@@ -5,9 +5,12 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
@@ -27,48 +30,27 @@ import kotlinx.coroutines.launch
  */
 class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
     private lateinit var homeViewModel: HomeViewModel
+    private val mFragments = mutableListOf<HomeListFragment>()
     override fun initView(view: View?) {
-
-        val rvAdapter = object : BaseQuickAdapter<WordHomeBean, QuickViewHolder>() {
-            override fun onBindViewHolder(
-                holder: QuickViewHolder,
-                position: Int,
-                item: WordHomeBean?
-            ) {
-                holder.setText(R.id.item_name_tv, item?.name)
-                holder.setText(R.id.item_description_tv, item?.description)
-                holder.setText(R.id.item_length_tv, item?.length)
-            }
-
-            override fun onCreateViewHolder(
-                context: Context,
-                parent: ViewGroup,
-                viewType: Int
-            ): QuickViewHolder {
-                return QuickViewHolder(R.layout.item_word_home, parent)
-            }
-
-        }
-
-        mBinding.recycler.apply {
-            adapter = rvAdapter
-            layoutManager = GridLayoutManager(context, 2)
-            addItemDecoration(GridSpacingItemDecoration(2, SizeUtils.dp2px(6f), true))
-        }
-        rvAdapter.setOnItemClickListener { adapter, view, position ->
-            run {
-                val intent = Intent(context, PracticeActivity::class.java).putExtra(
-                    "key_tableName",
-                    homeViewModel.firstList[position].tablename
-                )
-                startActivity(intent)
-            }
-        }
-
-        homeViewModel = HomeViewModel()
+        homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         lifecycleScope.launch {
             homeViewModel.loadData0()
-            rvAdapter.submitList(homeViewModel.firstList)
+
+            for (i in 0 until homeViewModel.list.size) {
+                mFragments.add(HomeListFragment.getInstance(i))
+            }
+
+            mBinding.viewPage2.adapter = object :
+                FragmentStateAdapter(this@HomeFragment) {
+                override fun getItemCount(): Int {
+                    return mFragments.size
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    return mFragments[position]
+                }
+            }
+
         }
     }
 
