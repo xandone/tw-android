@@ -9,5 +9,6 @@ data class WordHomeBean(
     val name: String,
     val description: String,
     val length: String,
+    val category: String,
     val tablename: String?
 )

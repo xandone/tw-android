@@ -1,27 +1,28 @@
 package com.xandone.twandroid.ui.home
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
+import android.graphics.Color
 import android.view.View
-import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.blankj.utilcode.util.SizeUtils
-import com.chad.library.adapter4.BaseQuickAdapter
-import com.chad.library.adapter4.viewholder.QuickViewHolder
-import com.xandone.twandroid.R
-import com.xandone.twandroid.bean.WordHomeBean
-import com.xandone.twandroid.databinding.FragHomeBinding
-import com.xandone.twandroid.ui.PracticeActivity
-import com.xandone.twandroid.ui.base.BaseVBFragment
-import com.xandone.twandroid.views.GridSpacingItemDecoration
+import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
+import com.xandone.twandroid.R
+import com.xandone.twandroid.databinding.FragHomeBinding
+import com.xandone.twandroid.ui.base.BaseVBFragment
+import com.xandone.twandroid.views.ViewPager2Helper
 import kotlinx.coroutines.launch
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
+
 
 /**
  * @author: xiao
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
     private lateinit var homeViewModel: HomeViewModel
     private val mFragments = mutableListOf<HomeListFragment>()
+    private val mTitleDataList = mutableListOf<String>()
     override fun initView(view: View?) {
         homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         lifecycleScope.launch {
@@ -38,6 +40,7 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
 
             for (i in 0 until homeViewModel.list.size) {
                 mFragments.add(HomeListFragment.getInstance(i))
+                mTitleDataList.add(homeViewModel.list[i][0].category)
             }
 
             mBinding.viewPage2.adapter = object :
@@ -51,7 +54,44 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
                 }
             }
 
+            initMagicIndicator()
         }
+    }
+
+    private fun initMagicIndicator() {
+        val commonNavigator = CommonNavigator(requireActivity())
+        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+            override fun getCount(): Int {
+                return mTitleDataList.size
+            }
+
+            override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
+                val colorTransitionPagerTitleView = ColorTransitionPagerTitleView(context)
+                colorTransitionPagerTitleView.apply {
+                    normalColor = ColorUtils.getColor(R.color.text_secend_color)
+                    selectedColor = ColorUtils.getColor(R.color.btn_color)
+                    text = mTitleDataList[index]
+                    textSize = 16f
+                    setOnClickListener {
+                        mBinding.viewPage2.currentItem = index
+                    }
+                }
+
+                return colorTransitionPagerTitleView
+            }
+
+            override fun getIndicator(context: Context?): IPagerIndicator {
+                val indicator = LinePagerIndicator(context)
+                indicator.mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                indicator.setColors(ColorUtils.getColor(R.color.btn_color))
+                indicator.startInterpolator = AccelerateInterpolator()
+                indicator.endInterpolator = DecelerateInterpolator(2f)
+                return indicator
+            }
+        }
+
+        mBinding.typeMi.navigator = commonNavigator
+        ViewPager2Helper.bind(mBinding.typeMi, mBinding.viewPage2);
     }
 
 
