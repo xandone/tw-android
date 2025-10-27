@@ -10,10 +10,10 @@ import com.xandone.twandroid.db.DBInfo
  * description:
  */
 @Entity(
-    tableName = DBInfo.TABLE_CET6,
+    tableName = DBInfo.TABLE_NCE_NEW_4,
     indices = [
-        Index(name = "idx_cet6_words_id", value = ["id"]),
-        Index(name = "idx_cet6_words_word", value = ["word"])
+        Index(name = "idx_nce_new_4_id", value = ["id"]),
+        Index(name = "idx_nce_new_4_word", value = ["word"])
     ]
 )
-class WordCEt6 : BaseWordEntity()
+class NceNew4 : BaseWordEntity()

@@ -67,7 +67,8 @@
       "url": "DanCiDeMimi_1.json",
       "length": 5657,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "dancidemimi_1"
     }
   ],
   [
@@ -82,7 +83,8 @@
       "url": "Duolingo_Vocabulary_B1.json",
       "length": 801,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "duolingo_vocabulary_b1"
     },
     {
       "id": "Duolingo_Vocabulary_B2",
@@ -95,7 +97,8 @@
       "url": "Duolingo_Vocabulary_B2.json",
       "length": 1423,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "duolingo_vocabulary_b1"
     },
     {
       "id": "Oxford3000",
@@ -108,7 +111,8 @@
       "url": "Oxford3000.json",
       "length": 1342,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "oxford3000"
     },
     {
       "id": "voa",
@@ -121,7 +125,8 @@
       "url": "voa.json",
       "length": 1505,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "voa"
     }
   ],
   [
@@ -136,7 +141,8 @@
       "url": "nce-new-1.json",
       "length": 908,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "nce_new_1"
     },
     {
       "id": "nce-new-2",
@@ -149,7 +155,8 @@
       "url": "nce-new-2.json",
       "length": 862,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "nce_new_2"
     },
     {
       "id": "nce-new-3",
@@ -162,7 +169,8 @@
       "url": "nce-new-3.json",
       "length": 1062,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "nce_new_3"
     },
     {
       "id": "nce-new-4",
@@ -175,7 +183,8 @@
       "url": "nce-new-4.json",
       "length": 793,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "nce_new_4"
     }
   ],
   [
@@ -190,7 +199,8 @@
       "url": "itVocabulary.json",
       "length": 1665,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "itvocabulary"
     }
   ]
 ]

@@ -10,10 +10,10 @@ import com.xandone.twandroid.db.DBInfo
  * description:
  */
 @Entity(
-    tableName = DBInfo.TABLE_CET6,
+    tableName = DBInfo.TABLE_DUOLINGO_VOCABULARY_B2,
     indices = [
-        Index(name = "idx_cet6_words_id", value = ["id"]),
-        Index(name = "idx_cet6_words_word", value = ["word"])
+        Index(name = "idx_duolingo_vocabulary_b2_id", value = ["id"]),
+        Index(name = "idx_duolingo_vocabulary_b2_word", value = ["word"])
     ]
 )
-class WordCEt6 : BaseWordEntity()
+class DuolinguoB2 : BaseWordEntity()

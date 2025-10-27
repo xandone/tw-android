@@ -25,8 +25,42 @@ class WordRepository {
             DBInfo.TABLE_CET6 -> AppDatabase.getInstance().wordCEt6Dao()
                 .loadDB(validPageSize, offset)
 
+            DBInfo.TABLE_KAOYAN_3_T -> AppDatabase.getInstance().kaoyanDao()
+                .loadDB(validPageSize, offset)
+
             DBInfo.TABLE_926 -> AppDatabase.getInstance()._926Dao()
                 .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_DANCIDEMIMI_1 -> AppDatabase.getInstance().wordSecretDao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_DUOLINGO_VOCABULARY_B1 -> AppDatabase.getInstance().duolinguoB1Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_DUOLINGO_VOCABULARY_B2 -> AppDatabase.getInstance().duolinguoB2Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_OXFORD3000 -> AppDatabase.getInstance().oxford3000Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_VOA -> AppDatabase.getInstance().voaDao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_NCE_NEW_1 -> AppDatabase.getInstance().nceNew1Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_NCE_NEW_2 -> AppDatabase.getInstance().nceNew2Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_NCE_NEW_3 -> AppDatabase.getInstance().nceNew3Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_NCE_NEW_4 -> AppDatabase.getInstance().nceNew4Dao()
+                .loadDB(validPageSize, offset)
+
+            DBInfo.TABLE_CODER -> AppDatabase.getInstance().wordCoderDao()
+                .loadDB(validPageSize, offset)
+
 
             else -> AppDatabase.getInstance().wordCEt4Dao().loadDB(validPageSize, offset)
         }
