@@ -17,4 +17,5 @@
     <color name="mask_color">#33cd976e</color>
     <color name="ripple_color">#1f555555</color>
     <color name="btn_color">#2f54eb</color>
+    <color name="divider_line_color">#E6EBF4</color>
 </resources>

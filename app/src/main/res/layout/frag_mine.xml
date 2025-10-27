@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:divider="@drawable/shape_ll_divider_hor_line"
+    android:orientation="vertical"
+    android:showDividers="middle">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/statistic_cv"
@@ -28,6 +30,41 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:text="统计"
+                android:textColor="@color/text_main_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_keyboard_arrow_right_24" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/error_cv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:rippleColor="@color/ripple_color">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_nearby_error_24" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="错词练习"
                 android:textColor="@color/text_main_color"
                 android:textSize="16sp" />
 
