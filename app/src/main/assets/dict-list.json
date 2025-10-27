@@ -68,19 +68,6 @@
       "length": 5657,
       "language": "en",
       "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "dancimimi_2",
-      "name": "单词的秘密-英语二",
-      "description": "单词的秘密英语（二）",
-      "category": "国内考试",
-      "tags": [
-        "考研"
-      ],
-      "url": "DanCiDeMimi_2.json",
-      "length": 3827,
-      "language": "en",
-      "translateLanguage": "zh-CN"
     }
   ],
   [
@@ -107,19 +94,6 @@
       ],
       "url": "Duolingo_Vocabulary_B2.json",
       "length": 1423,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "Duolingo_Vocabulary_C1",
-      "name": "多邻国分级词汇C1",
-      "description": "多邻国分级词汇C1",
-      "category": "国际考试",
-      "tags": [
-        "CEFR"
-      ],
-      "url": "Duolingo_Vocabulary_C1.json",
-      "length": 1314,
       "language": "en",
       "translateLanguage": "zh-CN"
     },
@@ -151,64 +125,6 @@
     }
   ],
   [
-    {
-      "id": "gaokao3500",
-      "name": "高考 3500 词",
-      "description": "高考常见词 3500",
-      "category": "青少年英语",
-      "tags": [
-        "通用"
-      ],
-      "url": "GaoKao_3500.json",
-      "length": 3893,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "gaokaozhentihexin",
-      "name": "高考历年真题核心高频",
-      "description": "高考历年真题核心高频",
-      "category": "青少年英语",
-      "tags": [
-        "通用"
-      ],
-      "words": [
-        "private",
-        "fuck",
-        "add",
-        "remove"
-      ],
-      "url": "GaoKaoZhenTiHeXinGaoPin.json",
-      "length": 799,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "gaokao-yuedu-gaopin",
-      "name": "高考英语阅读高频词汇",
-      "description": "高考英语阅读高频词汇",
-      "category": "青少年英语",
-      "tags": [
-        "通用"
-      ],
-      "url": "gaokao-yuedu-gaopin.json",
-      "length": 688,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "zhongkaohexin",
-      "name": "中考核心词",
-      "description": "中考核心词",
-      "category": "青少年英语",
-      "tags": [
-        "通用"
-      ],
-      "url": "ZhongKaoHeXin.json",
-      "length": 2140,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
     {
       "id": "nce-new-1",
       "name": "新概念英语-1",
@@ -260,35 +176,9 @@
       "length": 793,
       "language": "en",
       "translateLanguage": "zh-CN"
-    },
-    {
-      "id": "SHjuniormiddleOxford",
-      "name": "上海初中牛津词汇",
-      "description": "上海初中牛津词汇",
-      "category": "青少年英语",
-      "tags": [
-        "牛津版"
-      ],
-      "url": "OxfordVocabulary_juniorMiddleSH.json",
-      "length": 1270,
-      "language": "en",
-      "translateLanguage": "zh-CN"
     }
   ],
   [
-    {
-      "id": "coder",
-      "name": "Coder Dict",
-      "description": "程序员常见单词词库",
-      "category": "代码练习",
-      "tags": [
-        "通用"
-      ],
-      "url": "it-words.json",
-      "length": 1700,
-      "language": "en",
-      "translateLanguage": "zh-CN"
-    },
     {
       "id": "itVocabulary",
       "name": "计算机专用英语",
