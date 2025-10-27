@@ -1,6 +1,5 @@
 package com.xandone.twandroid.db
 
-import android.content.Context
 import androidx.room.RoomDatabase
 import androidx.room.Database
 import androidx.room.Room

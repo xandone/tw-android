@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,10 +18,9 @@ import com.xandone.twandroid.bean.TransBean
 import com.xandone.twandroid.databinding.FragPracticeBinding
 import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
+import com.xandone.twandroid.db.entity.BaseWordEntity
 import com.xandone.twandroid.db.entity.ErrorWord
-import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.repository.ErrorRepository
-import com.xandone.twandroid.ui.CEt4ViewModel
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
@@ -32,7 +30,7 @@ import kotlinx.coroutines.launch
  * created on: 2025/10/24 13:52
  * description:
  */
-class PracticeFragment(private val wordCEt4: WordCEt4) :
+class PracticeFragment(private val wordEntity: BaseWordEntity) :
     BaseVBFragment<FragPracticeBinding>(FragPracticeBinding::inflate) {
 
 //    private lateinit var viewModel: CEt4ViewModel
@@ -72,7 +70,7 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
             ) {
                 holder.setText(
                     R.id.pos_tv,
-                    MyUtils.addHighLight(item?.pos, wordCEt4.word)
+                    MyUtils.addHighLight(item?.pos, wordEntity.word)
                 )
                 holder.setText(R.id.cn_tv, item?.cn)
             }
@@ -96,7 +94,7 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
             ) {
                 holder.setText(
                     R.id.pos_tv,
-                    MyUtils.addHighLight(item?.c, wordCEt4.word)
+                    MyUtils.addHighLight(item?.c, wordEntity.word)
                 )
                 holder.setText(R.id.cn_tv, item?.cn)
             }
@@ -111,16 +109,16 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
 
 
         mBinding.phonetic0Tv.text =
-            String.format("[%s]", wordCEt4.phonetic0)
-        mBinding.wordTv.text = wordCEt4.word
+            String.format("[%s]", wordEntity.phonetic0)
+        mBinding.wordTv.text = wordEntity.word
 
         val trans: List<TransBean> = GsonUtils.fromJson(
-            wordCEt4.trans,
+            wordEntity.trans,
             object : TypeToken<List<TransBean>>() {}.type
         )
 
         val sentences: List<SentencesBean> = GsonUtils.fromJson(
-            wordCEt4.sentences,
+            wordEntity.sentences,
             object : TypeToken<List<SentencesBean>>() {}.type
         )
 
@@ -129,7 +127,7 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
     }
 
     fun changeWord(keyword: String) {
-        if (keyword != wordCEt4.word) {
+        if (keyword != wordEntity.word) {
             errorWord = keyword
             mBinding.errorTv.visibility = View.VISIBLE
             saveError2db()
@@ -143,7 +141,7 @@ class PracticeFragment(private val wordCEt4: WordCEt4) :
     }
 
     private fun saveError2db() {
-        val word = wordCEt4
+        val word = wordEntity
         val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
 
         lifecycleScope.launch {

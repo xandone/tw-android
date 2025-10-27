@@ -39,7 +39,8 @@
       "url": "KaoYan_3_T.json",
       "length": 3728,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "kaoyan_3_t"
     },
     {
       "id": "926",
@@ -52,7 +53,8 @@
       "url": "926.json",
       "length": 926,
       "language": "en",
-      "translateLanguage": "zh-CN"
+      "translateLanguage": "zh-CN",
+      "tablename": "_926"
     },
     {
       "id": "dancimimi_1",

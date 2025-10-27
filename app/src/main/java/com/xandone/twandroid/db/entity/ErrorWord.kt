@@ -15,7 +15,7 @@ data class ErrorWord(
     val wid: Int = 0,
     //表名称
     val errortable: String?,
-    val errorwid: Int,
+    val errorwid: Int?,
     val errorid: Int?,
     val word: String?,
     var errorcount: Int

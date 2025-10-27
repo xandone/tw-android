@@ -32,7 +32,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private val mFragmentList = mutableListOf<PracticeFragment>()
 
-    private var tablename: String? = null
+    private lateinit var tablename: String
 
     override fun initView() {
         immersionBar {
@@ -42,7 +42,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             fitsSystemWindows(true)
             titleBar(mBaseBinding.toolbar)
         }
-        tablename = intent.getStringExtra("key_tableName")
+        tablename = intent.getStringExtra("key_tableName") ?: DBInfo.TABLE_CET4
         if (ObjectUtils.isEmpty(tablename)) {
             tablename = DBInfo.TABLE_CET4
         }
@@ -135,7 +135,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         viewModel = ViewModelProvider(this, factory)[CEt4ViewModel::class.java]
 
         lifecycleScope.launch {
-            viewModel.loadData0(1, 10)
+            viewModel.loadData0(tablename, 1, 10)
 
             for (i in 0 until viewModel.pagedWordCEt4.size) {
                 val fragment = PracticeFragment(viewModel.pagedWordCEt4[i])

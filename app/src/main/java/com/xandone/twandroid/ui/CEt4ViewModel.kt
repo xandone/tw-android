@@ -3,7 +3,7 @@ package com.xandone.twandroid.ui
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.xandone.twandroid.db.entity.WordCEt4
+import com.xandone.twandroid.db.entity.BaseWordEntity
 import com.xandone.twandroid.repository.WordRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,14 +14,14 @@ import kotlinx.coroutines.withContext
  * description:
  */
 class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
-    val pagedWordCEt4 = mutableListOf<WordCEt4>()
+    val pagedWordCEt4 = mutableListOf<BaseWordEntity>()
 
     val mCurrentWordIndex = MutableLiveData<Int>()
-    val mCurrentWord = MutableLiveData<WordCEt4>()
+    val mCurrentWord = MutableLiveData<BaseWordEntity>()
 
-    suspend fun loadData0(page: Int, pageSize: Int) {
+    suspend fun loadData0(table: String, page: Int, pageSize: Int) {
         withContext(Dispatchers.IO) {
-            pagedWordCEt4.addAll(repository.getWordCEt4ByPage(page, pageSize))
+            pagedWordCEt4.addAll(repository.getWordCEt4ByPage(table, page, pageSize))
         }
         mCurrentWordIndex.value = 0
         mCurrentWord.value = pagedWordCEt4[mCurrentWordIndex.value!!]
