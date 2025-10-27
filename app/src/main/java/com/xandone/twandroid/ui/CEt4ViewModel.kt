@@ -21,7 +21,7 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
 
     suspend fun loadData0(table: String, page: Int, pageSize: Int) {
         withContext(Dispatchers.IO) {
-            pagedWordCEt4.addAll(repository.getWordCEt4ByPage(table, page, pageSize))
+            pagedWordCEt4.addAll(repository.loadDB(table, page, pageSize))
         }
         mCurrentWordIndex.value = 0
         mCurrentWord.value = pagedWordCEt4[mCurrentWordIndex.value!!]

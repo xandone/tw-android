@@ -13,7 +13,7 @@ import com.xandone.twandroid.db.entity.WordCEt4
 @Dao
 interface WordCEt4Dao {
     @Query("select * from cet4_words order by wid asc limit :pageSize offset :offset")
-    suspend fun getWordCEt4ByPage(pageSize: Int, offset: Int): List<WordCEt4>
+    suspend fun loadDB(pageSize: Int, offset: Int): List<WordCEt4>
 
     @Query("select count(*) from ${DBInfo.TABLE_CET4}")
     suspend fun count(): Int

@@ -12,7 +12,7 @@ import com.xandone.twandroid.db.entity.BaseWordEntity
  */
 class WordRepository {
 
-    suspend fun getWordCEt4ByPage(table: String, page: Int, pageSize: Int): List<BaseWordEntity> {
+    suspend fun loadDB(table: String, page: Int, pageSize: Int): List<BaseWordEntity> {
         val validPage = if (page < 1) 1 else page
         val validPageSize = if (pageSize < 1) 20 else pageSize
         // 计算偏移量：跳过 (page-1)*pageSize 条数据
@@ -20,12 +20,15 @@ class WordRepository {
 
         return when (table) {
             DBInfo.TABLE_CET4 -> AppDatabase.getInstance().wordCEt4Dao()
-                .getWordCEt4ByPage(validPageSize, offset)
+                .loadDB(validPageSize, offset)
 
             DBInfo.TABLE_CET6 -> AppDatabase.getInstance().wordCEt6Dao()
-                .getWordCEt6ByPage(validPageSize, offset)
+                .loadDB(validPageSize, offset)
 
-            else -> AppDatabase.getInstance().wordCEt4Dao().getWordCEt4ByPage(validPageSize, offset)
+            DBInfo.TABLE_926 -> AppDatabase.getInstance()._926Dao()
+                .loadDB(validPageSize, offset)
+
+            else -> AppDatabase.getInstance().wordCEt4Dao().loadDB(validPageSize, offset)
         }
     }
 

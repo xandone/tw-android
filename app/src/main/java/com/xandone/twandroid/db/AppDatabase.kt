@@ -7,9 +7,11 @@ import com.xandone.twandroid.App
 import com.xandone.twandroid.db.dao.ErrorWordDao
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.dao.WordCEt6Dao
+import com.xandone.twandroid.db.dao._926Dao
 import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.db.entity.WordCEt6
+import com.xandone.twandroid.db.entity._926Entity
 
 /**
  * @author: xiao
@@ -18,7 +20,7 @@ import com.xandone.twandroid.db.entity.WordCEt6
  */
 
 @Database(
-    entities = [WordCEt4::class, WordCEt6::class, ErrorWord::class],
+    entities = [WordCEt4::class, WordCEt6::class, ErrorWord::class, _926Entity::class],
     version = 1,
     exportSchema = false
 )
@@ -26,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordCEt4Dao(): WordCEt4Dao
     abstract fun wordCEt6Dao(): WordCEt6Dao
     abstract fun errorWordDao(): ErrorWordDao
+    abstract fun _926Dao(): _926Dao
 
     companion object {
         @Volatile
