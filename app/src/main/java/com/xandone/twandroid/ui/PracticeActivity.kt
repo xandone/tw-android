@@ -9,8 +9,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.ObjectUtils
+import com.blankj.utilcode.util.SPUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.R
+import com.xandone.twandroid.config.Constants
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
 import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.repository.WordRepository
@@ -27,7 +29,7 @@ import java.util.Locale
  */
 class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayoutBinding::inflate) {
     private var handwritingFragment: HandwritingFragment? = null
-    private var isShow = false
+    private var isShowHand = false
     private lateinit var viewModel: CEt4ViewModel
 
     private val mFragmentList = mutableListOf<PracticeFragment>()
@@ -43,12 +45,13 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             titleBar(mBaseBinding.toolbar)
         }
         tablename = intent.getStringExtra("key_tableName") ?: DBInfo.TABLE_CET4
+        isShowHand = SPUtils.getInstance().getBoolean(Constants.SP_HANDMODE)
         if (ObjectUtils.isEmpty(tablename)) {
             tablename = DBInfo.TABLE_CET4
         }
 
         mBaseBinding.rightTv.setTextColor(ColorUtils.getColor(R.color.btn_color))
-        showHandwriting()
+
         initWords()
         initFragment()
 
@@ -99,6 +102,10 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private fun initFragment() {
         handwritingFragment = HandwritingFragment()
+        if (isShowHand) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_layout, handwritingFragment!!).commit()
+        }
         handwritingFragment!!.writeCallBack = object : WriteCallBack {
             override fun showWrite(keyword: String) {
                 Log.d("sfsdfsdfsd", "showWrite: $keyword")
@@ -112,21 +119,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         }
 
         mBaseBinding.rightTv.setOnClickListener {
-            isShow = !isShow
-
-            if (isShow) {
-                if (!handwritingFragment!!.isAdded) {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.content_layout, handwritingFragment!!).commit()
-                } else {
-                    supportFragmentManager.beginTransaction().show(handwritingFragment!!).commit()
-                }
-            } else {
-                supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
-                resetCanvas()
-            }
-            showHandwriting()
+            isShowHand = !isShowHand
+            switchHand()
         }
+
+        showHandwriting()
     }
 
     private fun initWords() {
@@ -168,12 +165,28 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     }
 
     private fun showHandwriting() {
-        if (isShow) {
+        if (isShowHand) {
             mBaseBinding.rightTv.text = "键盘"
         } else {
             mBaseBinding.rightTv.text = "手写"
         }
 
+    }
+
+    private fun switchHand() {
+        if (isShowHand) {
+            if (!handwritingFragment!!.isAdded) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.content_layout, handwritingFragment!!).commit()
+            } else {
+                supportFragmentManager.beginTransaction().show(handwritingFragment!!).commit()
+            }
+        } else {
+            supportFragmentManager.beginTransaction().hide(handwritingFragment!!).commit()
+            resetCanvas()
+        }
+
+        showHandwriting()
     }
 
     private fun resetCanvas() {

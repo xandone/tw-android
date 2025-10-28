@@ -67,6 +67,7 @@ dependencies {
     implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")//沉浸式
     implementation("com.geyifeng.immersionbar:immersionbar-ktx:3.2.2")
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("com.kyleduo.switchbutton:library:2.1.0")
 
 
 }
