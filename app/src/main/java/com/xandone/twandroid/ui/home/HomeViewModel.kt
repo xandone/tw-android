@@ -2,13 +2,12 @@ package com.xandone.twandroid.ui.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.GsonUtils
 import com.google.gson.reflect.TypeToken
 import com.xandone.twandroid.App
-import com.xandone.twandroid.bean.WordHomeBean
+import com.xandone.twandroid.db.entity.WordHomeEntity
+import com.xandone.twandroid.repository.HomeRespository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -17,18 +16,27 @@ import kotlinx.coroutines.withContext
  * description:
  */
 class HomeViewModel : ViewModel() {
-    private val _list = mutableListOf<List<WordHomeBean>>()
-    val list = _list
+    private val _list = mutableListOf<List<WordHomeEntity>>()
+    lateinit var oneDArray: List<WordHomeEntity>
 
     suspend fun loadData0() {
         try {
+            val homeRespository = HomeRespository()
+            if (homeRespository.hasData()) {
+                Log.d("HomeViewModel", "有缓存")
+                oneDArray = homeRespository.loadHomeData()
+                return
+            }
+            Log.d("HomeViewModel", "无缓存")
             val jsonString = readAssetFile("dict-list.json")
-            val wordList: List<List<WordHomeBean>> = GsonUtils.fromJson(
+            val wordList: List<List<WordHomeEntity>> = GsonUtils.fromJson(
                 jsonString,
-                object : TypeToken<List<List<WordHomeBean>>>() {}.type
+                object : TypeToken<List<List<WordHomeEntity>>>() {}.type
             )
             _list.clear()
             _list.addAll(wordList)
+            oneDArray = _list.flatten()
+            homeRespository.insertHomeWordList(oneDArray)
         } catch (e: Exception) {
             Log.e("HomeViewModel", "读取JSON文件失败", e)
         }

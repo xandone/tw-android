@@ -11,8 +11,8 @@ import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.xandone.twandroid.R
-import com.xandone.twandroid.bean.WordHomeBean
 import com.xandone.twandroid.databinding.FragHomeListBinding
+import com.xandone.twandroid.db.entity.WordHomeEntity
 import com.xandone.twandroid.ui.PracticeActivity
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.views.GridSpacingItemDecoration
@@ -24,15 +24,17 @@ import com.xandone.twandroid.views.GridSpacingItemDecoration
  */
 class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding::inflate) {
     private lateinit var homeViewModel: HomeViewModel
-    private var mIndex = 0
+    private lateinit var mCategory: String
+    private var mDatas = mutableListOf<WordHomeEntity>()
     override fun initView(view: View?) {
-        mIndex = arguments?.getInt(INDEX) ?: 0
+        mCategory = arguments?.getString(INDEX) ?: ""
         homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-        val rvAdapter = object : BaseQuickAdapter<WordHomeBean, QuickViewHolder>() {
+        mDatas.addAll(homeViewModel.oneDArray.filter { it.category == mCategory })
+        val rvAdapter = object : BaseQuickAdapter<WordHomeEntity, QuickViewHolder>() {
             override fun onBindViewHolder(
                 holder: QuickViewHolder,
                 position: Int,
-                item: WordHomeBean?
+                item: WordHomeEntity?
             ) {
                 holder.setText(R.id.item_name_tv, item?.name)
                 holder.setText(R.id.item_description_tv, item?.description)
@@ -49,7 +51,8 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
 
         }
 
-        rvAdapter.submitList(homeViewModel.list[mIndex])
+
+        rvAdapter.submitList(mDatas)
 
         mBinding.recycler.apply {
             adapter = rvAdapter
@@ -60,7 +63,7 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
             run {
                 val intent = Intent(context, PracticeActivity::class.java).putExtra(
                     "key_tableName",
-                    homeViewModel.list[mIndex][position].tablename
+                    mDatas[position].tablename
                 )
                 startActivity(intent)
             }
@@ -70,10 +73,10 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
     companion object {
         const val INDEX = "index"
 
-        fun getInstance(type: Int): HomeListFragment {
+        fun getInstance(category: String): HomeListFragment {
             val fragment = HomeListFragment()
             val bundle = Bundle()
-            bundle.putInt(INDEX, type)
+            bundle.putString(INDEX, category)
             fragment.arguments = bundle
             return fragment
         }

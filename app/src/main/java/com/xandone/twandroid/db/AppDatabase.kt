@@ -17,6 +17,7 @@ import com.xandone.twandroid.db.dao.VoaDao
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.dao.WordCEt6Dao
 import com.xandone.twandroid.db.dao.WordCoderDao
+import com.xandone.twandroid.db.dao.WordHomeDao
 import com.xandone.twandroid.db.dao.WordSecretDao
 import com.xandone.twandroid.db.dao._926Dao
 import com.xandone.twandroid.db.entity.DuolinguoB1
@@ -32,6 +33,7 @@ import com.xandone.twandroid.db.entity.Voa
 import com.xandone.twandroid.db.entity.WordCEt4
 import com.xandone.twandroid.db.entity.WordCEt6
 import com.xandone.twandroid.db.entity.WordCoder
+import com.xandone.twandroid.db.entity.WordHomeEntity
 import com.xandone.twandroid.db.entity.WordSecret
 import com.xandone.twandroid.db.entity._926Entity
 
@@ -61,7 +63,8 @@ import com.xandone.twandroid.db.entity._926Entity
 
         WordCoder::class,
 
-        ErrorWord::class
+        ErrorWord::class,
+        WordHomeEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -86,6 +89,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordCoderDao(): WordCoderDao
 
     abstract fun errorWordDao(): ErrorWordDao
+    abstract fun wordHomeDao(): WordHomeDao
 
     companion object {
         @Volatile

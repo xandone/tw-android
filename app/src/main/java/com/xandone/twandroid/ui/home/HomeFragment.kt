@@ -1,7 +1,6 @@
 package com.xandone.twandroid.ui.home
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -38,9 +37,9 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
         lifecycleScope.launch {
             homeViewModel.loadData0()
 
-            for (i in 0 until homeViewModel.list.size) {
-                mFragments.add(HomeListFragment.getInstance(i))
-                mTitleDataList.add(homeViewModel.list[i][0].category)
+            homeViewModel.oneDArray.distinctBy { it.category }.forEach {
+                mFragments.add(HomeListFragment.getInstance(it.category))
+                mTitleDataList.add(it.category)
             }
 
             mBinding.viewPage2.adapter = object :
