@@ -23,11 +23,9 @@ class HomeViewModel : ViewModel() {
         try {
             val homeRespository = HomeRespository()
             if (homeRespository.hasData()) {
-                Log.d("HomeViewModel", "有缓存")
                 oneDArray = homeRespository.loadHomeData()
                 return
             }
-            Log.d("HomeViewModel", "无缓存")
             val jsonString = readAssetFile("dict-list.json")
             val wordList: List<List<WordHomeEntity>> = GsonUtils.fromJson(
                 jsonString,

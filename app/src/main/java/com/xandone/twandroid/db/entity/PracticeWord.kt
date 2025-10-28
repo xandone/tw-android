@@ -9,7 +9,7 @@ data class PracticeWord(
     @PrimaryKey(autoGenerate = true)
     val wid: Int = 0,
     val practicetable: String?,
-    val practicewid: Int,
+    val practicewid: Int?,
     val practiceid: Int?,
     val word: String?,
     var practicecount: Int

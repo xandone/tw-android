@@ -27,7 +27,7 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
     private lateinit var mCategory: String
     private var mDatas = mutableListOf<WordHomeEntity>()
     override fun initView(view: View?) {
-        mCategory = arguments?.getString(INDEX) ?: ""
+        mCategory = arguments?.getString(CATEGORY) ?: ""
         homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         mDatas.addAll(homeViewModel.oneDArray.filter { it.category == mCategory })
         val rvAdapter = object : BaseQuickAdapter<WordHomeEntity, QuickViewHolder>() {
@@ -71,12 +71,12 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
     }
 
     companion object {
-        const val INDEX = "index"
+        const val CATEGORY = "intent_category"
 
         fun getInstance(category: String): HomeListFragment {
             val fragment = HomeListFragment()
             val bundle = Bundle()
-            bundle.putString(INDEX, category)
+            bundle.putString(CATEGORY, category)
             fragment.arguments = bundle
             return fragment
         }

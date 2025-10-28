@@ -24,4 +24,7 @@ interface WordHomeDao {
     @Query("select * from ${DBInfo.TABLE_WORD_HOME} order by wid asc")
     suspend fun loadDB(): List<WordHomeEntity>
 
+    @Query("select * from ${DBInfo.TABLE_WORD_HOME} where wid = :table limit 1")
+    suspend fun getHomeWordByTableName(table: String): WordHomeEntity?
+
 }

@@ -13,6 +13,7 @@ import com.xandone.twandroid.db.dao.NceNew2Dao
 import com.xandone.twandroid.db.dao.NceNew3Dao
 import com.xandone.twandroid.db.dao.NceNew4Dao
 import com.xandone.twandroid.db.dao.Oxford3000Dao
+import com.xandone.twandroid.db.dao.PracticeWordDao
 import com.xandone.twandroid.db.dao.VoaDao
 import com.xandone.twandroid.db.dao.WordCEt4Dao
 import com.xandone.twandroid.db.dao.WordCEt6Dao
@@ -89,6 +90,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordCoderDao(): WordCoderDao
 
     abstract fun errorWordDao(): ErrorWordDao
+    abstract fun practiceWordDao(): PracticeWordDao
     abstract fun wordHomeDao(): WordHomeDao
 
     companion object {

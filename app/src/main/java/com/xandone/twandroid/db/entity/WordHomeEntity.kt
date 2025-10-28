@@ -19,7 +19,7 @@ class WordHomeEntity(
     val name: String,
     val description: String,
     val length: String,
-    val learnlen: String?,
+    var learnlen: Int = 0,
     val category: String,
     val tablename: String?
 )

@@ -20,7 +20,9 @@ import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.BaseWordEntity
 import com.xandone.twandroid.db.entity.ErrorWord
+import com.xandone.twandroid.db.entity.PracticeWord
 import com.xandone.twandroid.repository.ErrorRepository
+import com.xandone.twandroid.repository.HomeRespository
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
@@ -140,6 +142,9 @@ class PracticeFragment(private val wordEntity: BaseWordEntity) :
             MyUtils.addHighLight2(mBinding.wordTv.text.toString(), keyword)
     }
 
+    /**
+     * 错误记录
+     */
     private fun saveError2db() {
         val word = wordEntity
         val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
@@ -158,6 +163,31 @@ class PracticeFragment(private val wordEntity: BaseWordEntity) :
                     errorcount = 1
                 )
                 repository.insertErrorWord(temp)
+            }
+        }
+    }
+
+    /**
+     * 练习记录，不包括错误
+     */
+    private fun savePractice2db() {
+        val word = wordEntity
+        val repository = HomeRespository()
+
+        lifecycleScope.launch {
+            val practiceWord = repository.getPracticeWordById(word.wid!!)
+            if (practiceWord != null) {
+                practiceWord.practicecount++
+                repository.updatePracticeWord(practiceWord)
+            } else {
+                val temp = PracticeWord(
+                    practicetable = DBInfo.TABLE_CET4,
+                    practicewid = word.wid,
+                    practiceid = word.id,
+                    word = word.word,
+                    practicecount = 1
+                )
+                repository.insertPracticeWordAndRefreshHomeData(temp)
             }
         }
     }
