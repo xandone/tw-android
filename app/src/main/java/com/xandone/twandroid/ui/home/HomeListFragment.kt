@@ -16,6 +16,7 @@ import com.xandone.twandroid.db.entity.WordHomeEntity
 import com.xandone.twandroid.ui.PracticeActivity
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.views.GridSpacingItemDecoration
+import java.util.Locale
 
 /**
  * @author: xiao
@@ -38,7 +39,10 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
             ) {
                 holder.setText(R.id.item_name_tv, item?.name)
                 holder.setText(R.id.item_description_tv, item?.description)
-                holder.setText(R.id.item_length_tv, item?.length)
+                holder.setText(
+                    R.id.item_length_tv,
+                    String.format(Locale.getDefault(), "%d/%s", item?.learnlen, item?.length)
+                )
             }
 
             override fun onCreateViewHolder(

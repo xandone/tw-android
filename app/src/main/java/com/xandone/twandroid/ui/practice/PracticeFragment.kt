@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.PracticeWord
 import com.xandone.twandroid.repository.ErrorRepository
 import com.xandone.twandroid.repository.HomeRespository
+import com.xandone.twandroid.ui.CEt4ViewModel
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
@@ -32,7 +34,7 @@ import kotlinx.coroutines.launch
  * created on: 2025/10/24 13:52
  * description:
  */
-class PracticeFragment(private val wordEntity: BaseWordEntity) :
+class PracticeFragment(private val wordEntity: BaseWordEntity, private val tablename: String) :
     BaseVBFragment<FragPracticeBinding>(FragPracticeBinding::inflate) {
 
 //    private lateinit var viewModel: CEt4ViewModel
@@ -136,6 +138,7 @@ class PracticeFragment(private val wordEntity: BaseWordEntity) :
         } else {
             errorWord = ""
             mBinding.errorTv.visibility = View.GONE
+            savePractice2db()
         }
         mBinding.errorTv.text = errorWord
         mBinding.wordTv.text =
@@ -150,13 +153,13 @@ class PracticeFragment(private val wordEntity: BaseWordEntity) :
         val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
 
         lifecycleScope.launch {
-            val errorWord = repository.getErrorWordById(word.wid!!)
+            val errorWord = repository.getErrorWordById(word.wid!!, tablename)
             if (errorWord != null) {
                 errorWord.errorcount++
                 repository.updateErrorWord(errorWord)
             } else {
                 val temp = ErrorWord(
-                    errortable = DBInfo.TABLE_CET4,
+                    errortable = tablename,
                     errorwid = word.wid,
                     errorid = word.id,
                     word = word.word,
@@ -175,13 +178,13 @@ class PracticeFragment(private val wordEntity: BaseWordEntity) :
         val repository = HomeRespository()
 
         lifecycleScope.launch {
-            val practiceWord = repository.getPracticeWordById(word.wid!!)
+            val practiceWord = repository.getPracticeWordById(word.wid!!, tablename)
             if (practiceWord != null) {
                 practiceWord.practicecount++
                 repository.updatePracticeWord(practiceWord)
             } else {
                 val temp = PracticeWord(
-                    practicetable = DBInfo.TABLE_CET4,
+                    practicetable = tablename,
                     practicewid = word.wid,
                     practiceid = word.id,
                     word = word.word,

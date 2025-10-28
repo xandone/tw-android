@@ -1,5 +1,6 @@
 package com.xandone.twandroid.repository
 
+import android.util.Log
 import androidx.room.Transaction
 import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
@@ -34,8 +35,9 @@ class HomeRespository {
         return AppDatabase.getInstance().practiceWordDao().updatePracticeWord(practiceWord)
     }
 
-    suspend fun getPracticeWordById(practiceWord: Int): PracticeWord? {
-        return AppDatabase.getInstance().practiceWordDao().getPracticeWordById(practiceWord)
+    suspend fun getPracticeWordById(practiceWord: Int, table: String): PracticeWord? {
+        return AppDatabase.getInstance().practiceWordDao()
+            .getPracticeWordById(practiceWord, table)
     }
 
     @Transaction

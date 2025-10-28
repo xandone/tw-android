@@ -28,6 +28,6 @@ object DBInfo {
 
 
     const val TABLE_ERROR_WORD = "error_words"
-    const val TABLE_PRACTICE_WOED = "practice_woed"
+    const val TABLE_PRACTICE_WOED = "practice_word"
     const val TABLE_WORD_HOME = "word_home"
 }

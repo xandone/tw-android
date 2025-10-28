@@ -19,6 +19,8 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
     val mCurrentWordIndex = MutableLiveData<Int>()
     val mCurrentWord = MutableLiveData<BaseWordEntity>()
 
+    var tablename: String? = null
+
     suspend fun loadData0(table: String, page: Int, pageSize: Int) {
         withContext(Dispatchers.IO) {
             pagedWordCEt4.addAll(repository.loadDB(table, page, pageSize))

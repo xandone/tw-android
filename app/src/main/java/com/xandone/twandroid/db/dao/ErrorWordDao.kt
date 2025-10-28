@@ -20,7 +20,7 @@ interface ErrorWordDao {
     @Update
     suspend fun updateErrorWord(errorWord: ErrorWord)
 
-    @Query("select * from ${DBInfo.TABLE_ERROR_WORD} where errorwid = :errorwid limit 1")
-    suspend fun getErrorWordById(errorwid: Int): ErrorWord?
+    @Query("select * from ${DBInfo.TABLE_ERROR_WORD} where errorwid = :errorwid and errortable = :table limit 1")
+    suspend fun getErrorWordById(errorwid: Int, table: String): ErrorWord?
 
 }

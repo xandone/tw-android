@@ -15,6 +15,6 @@ interface PracticeWordDao {
     @Update
     suspend fun updatePracticeWord(practiceWord: PracticeWord)
 
-    @Query("select * from ${DBInfo.TABLE_PRACTICE_WOED} where practicewid = :practicewid limit 1")
-    suspend fun getPracticeWordById(practicewid: Int): PracticeWord?
+    @Query("select * from ${DBInfo.TABLE_PRACTICE_WOED} where practicewid = :practicewid and practicetable = :table limit 1")
+    suspend fun getPracticeWordById(practicewid: Int, table: String): PracticeWord?
 }

@@ -17,7 +17,7 @@ class ErrorRepository(private val dao: ErrorWordDao) {
         return dao.updateErrorWord(errorWord)
     }
 
-    suspend fun getErrorWordById(errorwid: Int): ErrorWord? {
-        return dao.getErrorWordById(errorwid)
+    suspend fun getErrorWordById(errorwid: Int, table: String): ErrorWord? {
+        return dao.getErrorWordById(errorwid, table)
     }
 }

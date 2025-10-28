@@ -130,12 +130,13 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         val factory =
             CEt4ViewModelFactory(WordRepository())
         viewModel = ViewModelProvider(this, factory)[CEt4ViewModel::class.java]
+        viewModel.tablename = tablename
 
         lifecycleScope.launch {
             viewModel.loadData0(tablename, 1, 10)
 
             for (i in 0 until viewModel.pagedWordCEt4.size) {
-                val fragment = PracticeFragment(viewModel.pagedWordCEt4[i])
+                val fragment = PracticeFragment(viewModel.pagedWordCEt4[i], tablename)
                 mFragmentList.add(fragment)
             }
 

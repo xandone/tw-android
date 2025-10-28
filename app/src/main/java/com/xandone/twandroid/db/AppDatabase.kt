@@ -37,6 +37,7 @@ import com.xandone.twandroid.db.entity.WordCoder
 import com.xandone.twandroid.db.entity.WordHomeEntity
 import com.xandone.twandroid.db.entity.WordSecret
 import com.xandone.twandroid.db.entity._926Entity
+import com.xandone.twandroid.db.entity.PracticeWord
 
 /**
  * @author: xiao
@@ -65,6 +66,7 @@ import com.xandone.twandroid.db.entity._926Entity
         WordCoder::class,
 
         ErrorWord::class,
+        PracticeWord::class,
         WordHomeEntity::class
     ],
     version = 1,
