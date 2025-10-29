@@ -110,9 +110,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             override fun showWrite(keyword: String) {
                 Log.d("sfsdfsdfsd", "showWrite: $keyword")
 
-                mFragmentList[viewModel.mCurrentWordIndex.value!!].changeWord(keyword)
+                val lowerKeyword = keyword.lowercase(Locale.getDefault())
+
+                mFragmentList[viewModel.mCurrentWordIndex.value!!].changeWord(lowerKeyword)
                 resetCanvas()
-                if (keyword == viewModel.mCurrentWord.value!!.word && viewModel.mCurrentWordIndex.value!! < mFragmentList.size) {
+                if (lowerKeyword == viewModel.mCurrentWord.value!!.word && viewModel.mCurrentWordIndex.value!! < mFragmentList.size) {
                     mBinding.viewPage2.currentItem = viewModel.mCurrentWordIndex.value!! + 1
                 }
             }
