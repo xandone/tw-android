@@ -22,12 +22,14 @@ import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.BaseWordEntity
 import com.xandone.twandroid.db.entity.ErrorWord
 import com.xandone.twandroid.db.entity.PracticeWord
+import com.xandone.twandroid.event.RefreshDbEvent
 import com.xandone.twandroid.repository.ErrorRepository
 import com.xandone.twandroid.repository.HomeRespository
 import com.xandone.twandroid.ui.CEt4ViewModel
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 /**
  * @author: xiao
@@ -191,6 +193,7 @@ class PracticeFragment(private val wordEntity: BaseWordEntity, private val table
                     practicecount = 1
                 )
                 repository.insertPracticeWordAndRefreshHomeData(temp)
+                EventBus.getDefault().post(RefreshDbEvent())
             }
         }
     }

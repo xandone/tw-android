@@ -60,6 +60,7 @@ dependencies {
     //工具
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.blankj:utilcodex:1.31.1")
+    implementation("org.greenrobot:eventbus:3.3.1")
 
     //ui
     implementation("com.github.hackware1993:MagicIndicator:1.7.0")
@@ -68,6 +69,7 @@ dependencies {
     implementation("com.geyifeng.immersionbar:immersionbar-ktx:3.2.2")
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     implementation("com.kyleduo.switchbutton:library:2.1.0")
+    implementation("com.afollestad.material-dialogs:core:3.3.0")
 
 
 }

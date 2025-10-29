@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import org.greenrobot.eventbus.EventBus
 
 /**
  * @author: xiao
@@ -29,6 +30,9 @@ abstract class BaseVBFragment<VB : ViewBinding>(private val initVb: (LayoutInfla
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (isEventBusRegistered()) {
+            EventBus.getDefault().register(this)
+        }
         initView(view)
     }
 
@@ -36,8 +40,15 @@ abstract class BaseVBFragment<VB : ViewBinding>(private val initVb: (LayoutInfla
 
     override fun onDestroyView() {
         super.onDestroyView()
+        if (isEventBusRegistered()) {
+            EventBus.getDefault().unregister(this)
+        }
         if (_binding != null) {
             _binding = null
         }
+    }
+
+    open fun isEventBusRegistered(): Boolean {
+        return false
     }
 }

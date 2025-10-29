@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.R
 import com.xandone.twandroid.databinding.FragHomeBinding
+import com.xandone.twandroid.event.RefreshDbEvent
 import com.xandone.twandroid.ui.base.BaseVBFragment
 import com.xandone.twandroid.views.ViewPager2Helper
 import kotlinx.coroutines.launch
@@ -21,6 +22,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -100,6 +103,17 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
             statusBarDarkFont(true)
             statusBarColor(R.color.app_bg_color)
             navigationBarColor(R.color.white)
+        }
+    }
+
+    override fun isEventBusRegistered(): Boolean {
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRefreshDb(event: RefreshDbEvent?) {
+        lifecycleScope.launch {
+            homeViewModel.loadData0()
         }
     }
 }
