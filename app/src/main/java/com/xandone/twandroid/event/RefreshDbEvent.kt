@@ -5,4 +5,4 @@ package com.xandone.twandroid.event
  * created on: 2025/10/29 11:21
  * description:
  */
-class RefreshDbEvent {}
+data class RefreshDbEvent(val tablename: String)

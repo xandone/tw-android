@@ -1,6 +1,7 @@
 package com.xandone.twandroid.ui.home
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -113,7 +114,10 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRefreshDb(event: RefreshDbEvent?) {
         lifecycleScope.launch {
-            homeViewModel.loadData0()
+            homeViewModel.oneDArray.first { it.tablename == event?.tablename }.let {
+                it.learnlen++
+            }
+            homeViewModel.refreshDB.value = homeViewModel.refreshDB.value!! + 1
         }
     }
 }

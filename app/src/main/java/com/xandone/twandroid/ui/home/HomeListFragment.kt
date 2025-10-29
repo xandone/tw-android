@@ -78,7 +78,7 @@ class HomeListFragment : BaseVBFragment<FragHomeListBinding>(FragHomeListBinding
             }
         }
 
-        mDatas.observe(this) {
+        homeViewModel.refreshDB.observe(this) {
             Log.d("HomeListFragment", "observe: ")
             rvAdapter.notifyDataSetChanged()
         }

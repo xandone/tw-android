@@ -193,7 +193,7 @@ class PracticeFragment(private val wordEntity: BaseWordEntity, private val table
                     practicecount = 1
                 )
                 repository.insertPracticeWordAndRefreshHomeData(temp)
-                EventBus.getDefault().post(RefreshDbEvent())
+                EventBus.getDefault().post(RefreshDbEvent(tablename))
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.xandone.twandroid.ui.home
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blankj.utilcode.util.GsonUtils
 import com.google.gson.reflect.TypeToken
@@ -18,6 +19,7 @@ import kotlinx.coroutines.withContext
 class HomeViewModel : ViewModel() {
     private val _list = mutableListOf<List<WordHomeEntity>>()
     lateinit var oneDArray: List<WordHomeEntity>
+    val refreshDB = MutableLiveData<Int>().apply { value = 0 }
 
     suspend fun loadData0() {
         try {
