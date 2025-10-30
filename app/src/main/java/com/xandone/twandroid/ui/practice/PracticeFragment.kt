@@ -36,7 +36,7 @@ import org.greenrobot.eventbus.EventBus
  * created on: 2025/10/24 13:52
  * description:
  */
-class PracticeFragment(private val wordEntity: BaseWordEntity, private val tablename: String) :
+class PracticeFragment(var wordEntity: BaseWordEntity, private val tablename: String) :
     BaseVBFragment<FragPracticeBinding>(FragPracticeBinding::inflate) {
 
 //    private lateinit var viewModel: CEt4ViewModel

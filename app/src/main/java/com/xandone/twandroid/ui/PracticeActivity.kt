@@ -137,19 +137,14 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         lifecycleScope.launch {
             viewModel.loadData0(tablename, 1, 10)
 
-            for (i in 0 until viewModel.pagedWordCEt4.size) {
-                val fragment = PracticeFragment(viewModel.pagedWordCEt4[i], tablename)
-                mFragmentList.add(fragment)
-            }
-
             mBinding.viewPage2.apply {
                 adapter = object : FragmentStateAdapter(this@PracticeActivity) {
                     override fun getItemCount(): Int {
-                        return mFragmentList.size
+                        return viewModel.pagedWordCEt4.size
                     }
 
                     override fun createFragment(position: Int): Fragment {
-                        return mFragmentList[position]
+                        return PracticeFragment(viewModel.pagedWordCEt4[position], tablename)
                     }
                 }
 

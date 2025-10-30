@@ -42,18 +42,17 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
             homeViewModel.loadData0()
 
             homeViewModel.oneDArray.distinctBy { it.category }.forEach {
-                mFragments.add(HomeListFragment.getInstance(it.category))
                 mTitleDataList.add(it.category)
             }
 
             mBinding.viewPage2.adapter = object :
                 FragmentStateAdapter(this@HomeFragment) {
                 override fun getItemCount(): Int {
-                    return mFragments.size
+                    return mTitleDataList.size
                 }
 
                 override fun createFragment(position: Int): Fragment {
-                    return mFragments[position]
+                    return HomeListFragment.getInstance(mTitleDataList[position])
                 }
             }
 
