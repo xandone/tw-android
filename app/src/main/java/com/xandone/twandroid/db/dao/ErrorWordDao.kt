@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.xandone.twandroid.db.DBInfo
 import com.xandone.twandroid.db.entity.ErrorWord
+import com.xandone.twandroid.db.entity.WordCEt4
 
 /**
  * @author: xiao
@@ -22,5 +23,10 @@ interface ErrorWordDao {
 
     @Query("select * from ${DBInfo.TABLE_ERROR_WORD} where errorwid = :errorwid and errortable = :table limit 1")
     suspend fun getErrorWordById(errorwid: Int, table: String): ErrorWord?
+
+
+    @Query("select * from  ${DBInfo.TABLE_ERROR_WORD} order by wid asc limit :pageSize offset :offset")
+    suspend fun loadDB(pageSize: Int, offset: Int): List<ErrorWord>
+
 
 }

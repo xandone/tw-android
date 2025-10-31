@@ -1,6 +1,7 @@
 package com.xandone.twandroid.repository
 
 import com.xandone.twandroid.db.dao.ErrorWordDao
+import com.xandone.twandroid.db.entity.BaseWordEntity
 import com.xandone.twandroid.db.entity.ErrorWord
 
 /**
@@ -20,4 +21,13 @@ class ErrorRepository(private val dao: ErrorWordDao) {
     suspend fun getErrorWordById(errorwid: Int, table: String): ErrorWord? {
         return dao.getErrorWordById(errorwid, table)
     }
+
+    suspend fun loadDB(page: Int, pageSize: Int): List<ErrorWord> {
+        val validPage = if (page < 1) 1 else page
+        val validPageSize = if (pageSize < 1) 20 else pageSize
+        val offset = (validPage - 1) * validPageSize
+
+        return dao.loadDB(validPageSize, offset)
+    }
+
 }
