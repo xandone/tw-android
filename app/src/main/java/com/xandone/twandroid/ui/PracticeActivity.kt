@@ -156,7 +156,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         viewModel.tablename = tablename
 
         lifecycleScope.launch {
-            viewModel.loadData0(tablename, 1, 1000)
+            viewModel.loadData0(tablename, 1, viewModel.dailyCount)
 
             vpAdapter = object : BaseQuickAdapter<WordBean, QuickViewHolder>() {
                 override fun onBindViewHolder(

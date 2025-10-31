@@ -7,4 +7,5 @@ package com.xandone.twandroid.config
  */
 object Constants {
     const val SP_HANDMODE = "sp_handmode"
+    const val SP_DAILY = "sp_daily"
 }
