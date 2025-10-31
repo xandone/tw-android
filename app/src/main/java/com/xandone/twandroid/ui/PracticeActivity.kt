@@ -56,13 +56,6 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private lateinit var tablename: String
 
     override fun initView() {
-        immersionBar {
-            statusBarDarkFont(true)
-            statusBarColor(R.color.white)
-            navigationBarColor(R.color.white)
-            fitsSystemWindows(true)
-            titleBar(mBaseBinding.toolbar)
-        }
         tablename = intent.getStringExtra("key_tableName") ?: DBInfo.TABLE_CET4
         isShowHand = SPUtils.getInstance().getBoolean(Constants.SP_HANDMODE)
         if (ObjectUtils.isEmpty(tablename)) {

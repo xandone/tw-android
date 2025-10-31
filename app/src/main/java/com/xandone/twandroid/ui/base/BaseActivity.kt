@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.gyf.immersionbar.ktx.immersionBar
+import com.xandone.twandroid.R
 import com.xandone.twandroid.databinding.ActBaseBinding
 
 /**
@@ -33,6 +35,9 @@ abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflate
         }
         mBaseBinding.titleTv.text = title
 
+
+
+        initImmersionBar()
         initView()
     }
 
@@ -45,6 +50,20 @@ abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflate
         }
         if (_baseBinding != null) {
             _baseBinding = null
+        }
+    }
+
+    protected open fun isUseDefaultImmersionBar(): Boolean {
+        return true
+    }
+
+    protected fun initImmersionBar() {
+        immersionBar {
+            statusBarDarkFont(true)
+            statusBarColor(R.color.white)
+            navigationBarColor(R.color.white)
+            fitsSystemWindows(true)
+            titleBar(mBaseBinding.toolbar)
         }
     }
 

@@ -51,4 +51,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
+
+    override fun isUseDefaultImmersionBar(): Boolean {
+        return false
+    }
 }

@@ -28,6 +28,10 @@
             android:name=".ui.PracticeActivity"
             android:label="练习" />
 
+        <activity
+            android:name=".ui.mine.error.ErrorWordActivity"
+            android:label="错误本" />
+
         <!--适配华为（huawei）刘海屏-->
         <meta-data
             android:name="android.notch_support"

@@ -1,5 +1,6 @@
 package com.xandone.twandroid.ui.mine
 
+import android.content.Intent
 import android.text.InputType
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
@@ -10,6 +11,7 @@ import com.xandone.twandroid.R
 import com.xandone.twandroid.config.Constants
 import com.xandone.twandroid.databinding.FragMineBinding
 import com.xandone.twandroid.ui.base.BaseVBFragment
+import com.xandone.twandroid.ui.mine.error.ErrorWordActivity
 
 /**
  * @author: xiao
@@ -46,6 +48,10 @@ class MineFragment : BaseVBFragment<FragMineBinding>(FragMineBinding::inflate) {
                     }
                 }
             }
+        }
+
+        mBinding.errorMcv.setOnClickListener {
+            startActivity(Intent(requireActivity(), ErrorWordActivity::class.java))
         }
     }
 
