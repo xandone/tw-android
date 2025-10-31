@@ -1,25 +1,46 @@
 package com.xandone.twandroid.ui
 
+import android.content.Context
+import android.graphics.Paint
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ObjectUtils
 import com.blankj.utilcode.util.SPUtils
+import com.chad.library.adapter4.BaseQuickAdapter
+import com.chad.library.adapter4.viewholder.QuickViewHolder
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ktx.immersionBar
 import com.xandone.twandroid.R
+import com.xandone.twandroid.bean.SentencesBean
+import com.xandone.twandroid.bean.TransBean
+import com.xandone.twandroid.bean.WordBean
 import com.xandone.twandroid.config.Constants
 import com.xandone.twandroid.databinding.ActPracticeLayoutBinding
+import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
+import com.xandone.twandroid.db.entity.ErrorWord
+import com.xandone.twandroid.db.entity.PracticeWord
+import com.xandone.twandroid.event.RefreshDbEvent
+import com.xandone.twandroid.repository.ErrorRepository
+import com.xandone.twandroid.repository.HomeRespository
 import com.xandone.twandroid.repository.WordRepository
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
-import com.xandone.twandroid.ui.practice.PracticeFragment
+import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import java.util.Locale
 
 /**
@@ -31,8 +52,6 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private var handwritingFragment: HandwritingFragment? = null
     private var isShowHand = false
     private lateinit var viewModel: CEt4ViewModel
-
-    private val mFragmentList = mutableListOf<PracticeFragment>()
 
     private lateinit var tablename: String
 
@@ -111,10 +130,11 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 Log.d("sfsdfsdfsd", "showWrite: $keyword")
 
                 val lowerKeyword = keyword.lowercase(Locale.getDefault())
-
-                mFragmentList[viewModel.mCurrentWordIndex.value!!].changeWord(lowerKeyword)
+                val wordBean = viewModel.pagedWordCEt4[viewModel.mCurrentWordIndex.value!!]
+                wordBean.keyword = lowerKeyword
+                changeWord(wordBean)
                 resetCanvas()
-                if (lowerKeyword == viewModel.mCurrentWord.value!!.word && viewModel.mCurrentWordIndex.value!! < mFragmentList.size) {
+                if (lowerKeyword == viewModel.mCurrentWord.value!!.word && viewModel.mCurrentWordIndex.value!! < viewModel.pagedWordCEt4.size) {
                     mBinding.viewPage2.currentItem = viewModel.mCurrentWordIndex.value!! + 1
                 }
             }
@@ -128,6 +148,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         showHandwriting()
     }
 
+    lateinit var vpAdapter: BaseQuickAdapter<WordBean, QuickViewHolder>
     private fun initWords() {
         val factory =
             CEt4ViewModelFactory(WordRepository())
@@ -135,18 +156,116 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         viewModel.tablename = tablename
 
         lifecycleScope.launch {
-            viewModel.loadData0(tablename, 1, 10)
+            viewModel.loadData0(tablename, 1, 1000)
+
+            vpAdapter = object : BaseQuickAdapter<WordBean, QuickViewHolder>() {
+                override fun onBindViewHolder(
+                    holder: QuickViewHolder,
+                    position: Int,
+                    itemWord: WordBean?
+                ) {
+                    val errorTv = holder.getView<TextView>(R.id.error_tv)
+                    errorTv.paintFlags = errorTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    if (ObjectUtils.isNotEmpty(itemWord?.errorWord)) {
+                        errorTv.text = itemWord?.errorWord
+                        errorTv.visibility = View.VISIBLE
+                    } else {
+                        errorTv.text = ""
+                        errorTv.visibility = View.GONE
+                    }
+
+                    val rvAdapter = object : BaseQuickAdapter<TransBean, QuickViewHolder>() {
+
+                        override fun onCreateViewHolder(
+                            context: Context,
+                            parent: ViewGroup,
+                            viewType: Int
+                        ): QuickViewHolder {
+                            return QuickViewHolder(R.layout.item_trans, parent)
+                        }
+
+                        override fun onBindViewHolder(
+                            holder: QuickViewHolder,
+                            position: Int,
+                            item: TransBean?
+                        ) {
+                            holder.setText(
+                                R.id.pos_tv,
+                                MyUtils.addHighLight(item?.pos, itemWord?.word)
+                            )
+                            holder.setText(R.id.cn_tv, item?.cn)
+                        }
+
+                    }
+
+                    val rvAdapter2 = object : BaseQuickAdapter<SentencesBean, QuickViewHolder>() {
+
+                        override fun onCreateViewHolder(
+                            context: Context,
+                            parent: ViewGroup,
+                            viewType: Int
+                        ): QuickViewHolder {
+                            return QuickViewHolder(R.layout.item_sentences, parent)
+                        }
+
+                        override fun onBindViewHolder(
+                            holder: QuickViewHolder,
+                            position: Int,
+                            item: SentencesBean?
+                        ) {
+                            holder.setText(
+                                R.id.pos_tv,
+                                MyUtils.addHighLight(item?.c, itemWord?.word)
+                            )
+                            holder.setText(R.id.cn_tv, item?.cn)
+                        }
+
+                    }
+
+
+                    holder.getView<RecyclerView>(R.id.trans_rv).apply {
+                        adapter = ConcatAdapter(rvAdapter, rvAdapter2)
+                        layoutManager = LinearLayoutManager(this@PracticeActivity)
+                    }
+
+
+                    holder.getView<TextView>(R.id.phonetic0_tv).text =
+                        String.format("[%s]", itemWord?.phonetic0)
+                    if (itemWord?.keyword.isNullOrEmpty()) {
+                        holder.getView<TextView>(R.id.word_tv).text = itemWord?.word
+                    } else {
+                        holder.getView<TextView>(R.id.word_tv).text =
+                            MyUtils.addHighLight2(itemWord?.word, itemWord?.keyword)
+                    }
+
+                    val trans: List<TransBean> = GsonUtils.fromJson(
+                        itemWord?.trans,
+                        object : TypeToken<List<TransBean>>() {}.type
+                    )
+
+                    val sentences: List<SentencesBean> = GsonUtils.fromJson(
+                        itemWord?.sentences,
+                        object : TypeToken<List<SentencesBean>>() {}.type
+                    )
+
+                    rvAdapter.submitList(trans)
+                    rvAdapter2.submitList(sentences)
+                }
+
+                override fun onCreateViewHolder(
+                    context: Context,
+                    parent: ViewGroup,
+                    viewType: Int
+                ): QuickViewHolder {
+                    return QuickViewHolder(R.layout.item_practice_word, parent)
+                }
+
+            }
+
+            vpAdapter.submitList(viewModel.pagedWordCEt4)
 
             mBinding.viewPage2.apply {
-                adapter = object : FragmentStateAdapter(this@PracticeActivity) {
-                    override fun getItemCount(): Int {
-                        return viewModel.pagedWordCEt4.size
-                    }
-
-                    override fun createFragment(position: Int): Fragment {
-                        return PracticeFragment(viewModel.pagedWordCEt4[position], tablename)
-                    }
-                }
+                adapter = vpAdapter
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
@@ -189,6 +308,67 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
     private fun resetCanvas() {
         handwritingFragment?.reset()
+    }
+
+    fun changeWord(wordBean: WordBean) {
+        if (wordBean.keyword != wordBean.word) {
+            wordBean.errorWord = wordBean.keyword
+            vpAdapter.notifyItemChanged(viewModel.mCurrentWordIndex.value!!)
+            saveError2db(wordBean)
+        } else {
+            wordBean.errorWord = ""
+            vpAdapter.notifyItemChanged(viewModel.mCurrentWordIndex.value!!, Any())
+            savePractice2db(wordBean)
+        }
+    }
+
+    /**
+     * 错误记录
+     */
+    private fun saveError2db(wordBean: WordBean) {
+        val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
+
+        lifecycleScope.launch {
+            val errorWord = repository.getErrorWordById(wordBean.wid!!, tablename)
+            if (errorWord != null) {
+                errorWord.errorcount++
+                repository.updateErrorWord(errorWord)
+            } else {
+                val temp = ErrorWord(
+                    errortable = tablename,
+                    errorwid = wordBean.wid,
+                    errorid = wordBean.id,
+                    word = wordBean.word,
+                    errorcount = 1
+                )
+                repository.insertErrorWord(temp)
+            }
+        }
+    }
+
+    /**
+     * 练习记录，不包括错误
+     */
+    private fun savePractice2db(wordBean: WordBean) {
+        val repository = HomeRespository()
+
+        lifecycleScope.launch {
+            val practiceWord = repository.getPracticeWordById(wordBean.wid!!, tablename)
+            if (practiceWord != null) {
+                practiceWord.practicecount++
+                repository.updatePracticeWord(practiceWord)
+            } else {
+                val temp = PracticeWord(
+                    practicetable = tablename,
+                    practicewid = wordBean.wid,
+                    practiceid = wordBean.id,
+                    word = wordBean.word,
+                    practicecount = 1
+                )
+                repository.insertPracticeWordAndRefreshHomeData(temp)
+                EventBus.getDefault().post(RefreshDbEvent(tablename))
+            }
+        }
     }
 
 

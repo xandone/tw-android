@@ -2,6 +2,7 @@ package com.xandone.twandroid.ui.practice
 
 import android.content.Context
 import android.graphics.Paint
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.google.gson.reflect.TypeToken
 import com.xandone.twandroid.R
 import com.xandone.twandroid.bean.SentencesBean
 import com.xandone.twandroid.bean.TransBean
+import com.xandone.twandroid.bean.WordBean
 import com.xandone.twandroid.databinding.FragPracticeBinding
 import com.xandone.twandroid.db.AppDatabase
 import com.xandone.twandroid.db.DBInfo
@@ -35,13 +37,12 @@ import org.greenrobot.eventbus.EventBus
  * @author: xiao
  * created on: 2025/10/24 13:52
  * description:
+ * @deprecated 使用view代替fragment
  */
-class PracticeFragment(var wordEntity: BaseWordEntity, private val tablename: String) :
+class PracticeFragment(var wordEntity: WordBean, private val tablename: String) :
     BaseVBFragment<FragPracticeBinding>(FragPracticeBinding::inflate) {
 
 //    private lateinit var viewModel: CEt4ViewModel
-
-    private var errorWord: String? = null
 
     override fun initView(view: View?) {
 //        viewModel = ViewModelProvider(requireActivity())[CEt4ViewModel::class.java]
@@ -50,9 +51,10 @@ class PracticeFragment(var wordEntity: BaseWordEntity, private val tablename: St
     }
 
     private fun initWords() {
+        Log.d("initWords", "initWords")
         mBinding.errorTv.paintFlags = mBinding.errorTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        if (ObjectUtils.isNotEmpty(errorWord)) {
-            mBinding.errorTv.text = errorWord
+        if (ObjectUtils.isNotEmpty(wordEntity.errorWord)) {
+            mBinding.errorTv.text = wordEntity.errorWord
             mBinding.errorTv.visibility = View.VISIBLE
         } else {
             mBinding.errorTv.text = ""
@@ -116,7 +118,12 @@ class PracticeFragment(var wordEntity: BaseWordEntity, private val tablename: St
 
         mBinding.phonetic0Tv.text =
             String.format("[%s]", wordEntity.phonetic0)
-        mBinding.wordTv.text = wordEntity.word
+        if (wordEntity.keyword.isNullOrEmpty()) {
+            mBinding.wordTv.text = wordEntity.word
+        } else {
+            mBinding.wordTv.text =
+                MyUtils.addHighLight2(wordEntity.word, wordEntity.keyword)
+        }
 
         val trans: List<TransBean> = GsonUtils.fromJson(
             wordEntity.trans,
@@ -132,69 +139,4 @@ class PracticeFragment(var wordEntity: BaseWordEntity, private val tablename: St
         rvAdapter2.submitList(sentences)
     }
 
-    fun changeWord(keyword: String) {
-        if (keyword != wordEntity.word) {
-            errorWord = keyword
-            mBinding.errorTv.visibility = View.VISIBLE
-            saveError2db()
-        } else {
-            errorWord = ""
-            mBinding.errorTv.visibility = View.GONE
-            savePractice2db()
-        }
-        mBinding.errorTv.text = errorWord
-        mBinding.wordTv.text =
-            MyUtils.addHighLight2(mBinding.wordTv.text.toString(), keyword)
-    }
-
-    /**
-     * 错误记录
-     */
-    private fun saveError2db() {
-        val word = wordEntity
-        val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
-
-        lifecycleScope.launch {
-            val errorWord = repository.getErrorWordById(word.wid!!, tablename)
-            if (errorWord != null) {
-                errorWord.errorcount++
-                repository.updateErrorWord(errorWord)
-            } else {
-                val temp = ErrorWord(
-                    errortable = tablename,
-                    errorwid = word.wid,
-                    errorid = word.id,
-                    word = word.word,
-                    errorcount = 1
-                )
-                repository.insertErrorWord(temp)
-            }
-        }
-    }
-
-    /**
-     * 练习记录，不包括错误
-     */
-    private fun savePractice2db() {
-        val word = wordEntity
-        val repository = HomeRespository()
-
-        lifecycleScope.launch {
-            val practiceWord = repository.getPracticeWordById(word.wid!!, tablename)
-            if (practiceWord != null) {
-                practiceWord.practicecount++
-                repository.updatePracticeWord(practiceWord)
-            } else {
-                val temp = PracticeWord(
-                    practicetable = tablename,
-                    practicewid = word.wid,
-                    practiceid = word.id,
-                    word = word.word,
-                    practicecount = 1
-                )
-                repository.insertPracticeWordAndRefreshHomeData(temp)
-                EventBus.getDefault().post(RefreshDbEvent(tablename))
-            }
-        }
-    }
 }

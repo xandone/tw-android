@@ -7,4 +7,4 @@ import com.xandone.twandroid.db.entity.BaseWordEntity
  * created on: 2025/10/30 10:13
  * description:
  */
-data class WordBean(var errorWord: String? = null) : BaseWordEntity()
+data class WordBean(var errorWord: String? = null, var keyword: String? = null) : BaseWordEntity()
