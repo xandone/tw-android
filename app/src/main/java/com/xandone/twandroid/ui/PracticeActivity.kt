@@ -316,15 +316,21 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     fun changeWord(wordBean: WordBean) {
         if (wordBean.keyword != wordBean.word) {
             wordBean.errorWord = wordBean.keyword
-            viewModel.mCurrentWord.value?.let { viewModel.pagedWordCEt4.add(it) }
             vpAdapter.notifyItemChanged(viewModel.mCurrentWordIndex.value!!)
-            vpAdapter.notifyItemInserted(viewModel.pagedWordCEt4.size)
-            mBinding.countTv.text = String.format(
-                Locale.getDefault(),
-                "%d/%d",
-                viewModel.mCurrentWordIndex.value!! + 1,
-                viewModel.pagedWordCEt4.size
-            )
+            val b: Boolean = viewModel.pagedWordCEt4.groupingBy { it }
+                .eachCount()
+                .any { it.value < 2 }
+            if (b) {
+                viewModel.mCurrentWord.value?.let { viewModel.pagedWordCEt4.add(it) }
+                vpAdapter.notifyItemInserted(viewModel.pagedWordCEt4.size)
+                mBinding.countTv.text = String.format(
+                    Locale.getDefault(),
+                    "%d/%d",
+                    viewModel.mCurrentWordIndex.value!! + 1,
+                    viewModel.pagedWordCEt4.size
+                )
+            }
+
             saveError2db(wordBean)
         } else {
             wordBean.errorWord = ""
