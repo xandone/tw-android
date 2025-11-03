@@ -17,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ObjectUtils
+import com.blankj.utilcode.util.ResourceUtils
 import com.blankj.utilcode.util.SPUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
@@ -54,6 +55,8 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
     private lateinit var viewModel: CEt4ViewModel
 
     private lateinit var tablename: String
+
+    private var isRepeatMode = false
 
     override fun initView() {
         tablename = intent.getStringExtra("key_tableName") ?: DBInfo.TABLE_CET4
@@ -182,10 +185,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                             position: Int,
                             item: TransBean?
                         ) {
-                            holder.setText(
-                                R.id.pos_tv,
-                                MyUtils.addHighLight(item?.pos, itemWord?.word)
-                            )
+                            holder.setText(R.id.pos_tv, item?.pos)
                             holder.setText(R.id.cn_tv, item?.cn)
                         }
 
@@ -206,10 +206,15 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                             position: Int,
                             item: SentencesBean?
                         ) {
-                            holder.setText(
-                                R.id.pos_tv,
-                                MyUtils.addHighLight(item?.c, itemWord?.word)
-                            )
+
+                            val posTv = holder.getView<TextView>(R.id.pos_tv)
+
+                            if (isRepeatMode) {
+                                posTv.text = MyUtils.addMask(item?.c, itemWord?.word)
+                            } else {
+                                posTv.text = MyUtils.addHighLight(item?.c, itemWord?.word)
+                            }
+
                             holder.setText(R.id.cn_tv, item?.cn)
                         }
 
@@ -224,11 +229,16 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
 
                     holder.getView<TextView>(R.id.phonetic0_tv).text =
                         String.format("[%s]", itemWord?.phonetic0)
+                    val wordTv = holder.getView<TextView>(R.id.word_tv)
                     if (itemWord?.keyword.isNullOrEmpty()) {
-                        holder.getView<TextView>(R.id.word_tv).text = itemWord?.word
+                        wordTv.text = itemWord?.word
                     } else {
-                        holder.getView<TextView>(R.id.word_tv).text =
-                            MyUtils.addHighLight2(itemWord?.word, itemWord?.keyword)
+                        wordTv.text = MyUtils.addHighLight2(itemWord?.word, itemWord?.keyword)
+                    }
+                    if (isRepeatMode) {
+                        wordTv.foreground = ResourceUtils.getDrawable(R.drawable.gradient_mask)
+                    } else {
+                        wordTv.foreground = null
                     }
 
                     val trans: List<TransBean> = GsonUtils.fromJson(
