@@ -18,6 +18,9 @@ data class ErrorWord(
     val errorwid: Int?,
     val errorid: Int?,
     val word: String?,
+    val phonetic0: String? = null,
+    val trans: String? = null,
+    val sentences: String? = null,
     var errorcount: Int
 )
 
