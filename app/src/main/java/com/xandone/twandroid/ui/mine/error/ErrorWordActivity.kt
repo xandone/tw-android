@@ -1,7 +1,11 @@
 package com.xandone.twandroid.ui.mine.error
 
+import android.animation.ArgbEvaluator
 import android.content.Context
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -86,7 +90,7 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
                     ) {
 
                         val posTv = holder.getView<TextView>(R.id.pos_tv)
-                        posTv.text = MyUtils.addHighLight(item?.c, itemWord?.word)
+                        posTv.text = MyUtils.addHighLight(item?.c, itemWord.word)
                         holder.setText(R.id.cn_tv, item?.cn)
                     }
 
@@ -100,17 +104,21 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
 
 
                 val trans: List<TransBean> = GsonUtils.fromJson(
-                    itemWord?.trans,
+                    itemWord.trans,
                     object : TypeToken<List<TransBean>>() {}.type
                 )
 
                 val sentences: List<SentencesBean> = GsonUtils.fromJson(
-                    itemWord?.sentences,
+                    itemWord.sentences,
                     object : TypeToken<List<SentencesBean>>() {}.type
                 )
 
                 rvAdapter.submitList(trans)
                 rvAdapter2.submitList(sentences)
+
+                val arrowIv = holder.getView<ImageView>(R.id.arrow_iv)
+                arrowIv.rotation = if (itemWord.isSelect) -180f else 0f
+
             }
 
             override fun onCreateViewHolder(
