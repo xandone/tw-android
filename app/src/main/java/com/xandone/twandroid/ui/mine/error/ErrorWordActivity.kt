@@ -27,6 +27,7 @@ import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.utils.MyUtils
 import com.xandone.twandroid.views.SpaceItemDecoration
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
  * @author: xiao
@@ -49,8 +50,12 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
                 position: Int,
                 itemWord: ErrorWord?
             ) {
+                holder.setText(
+                    R.id.serial_tv,
+                    String.format(Locale.getDefault(), "%d.", position + 1)
+                )
                 holder.setText(R.id.word_tv, itemWord?.word)
-                holder.setText(R.id.phonetic0_tv, itemWord?.phonetic0)
+                holder.setText(R.id.phonetic0_tv, String.format("[%s]", itemWord?.phonetic0))
                 holder.setGone(R.id.trans_rv, !itemWord?.isSelect!!)
                 val rvAdapter = object : BaseQuickAdapter<TransBean, QuickViewHolder>() {
 
@@ -135,8 +140,7 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
             addItemDecoration(SpaceItemDecoration(6))
         }
         lifecycleScope.launch {
-            val datas = viewModel.loadData()
-            mAdapter.submitList(datas)
+            mAdapter.submitList(viewModel.loadData())
         }
 
         mAdapter.setOnItemClickListener { _, _, position ->
