@@ -350,6 +350,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         val repository = ErrorRepository(AppDatabase.getInstance().errorWordDao())
 
         lifecycleScope.launch {
+            Log.d("saveError2db", GsonUtils.toJson(wordBean))
             val errorWord = repository.getErrorWordById(wordBean.wid!!, tablename)
             if (errorWord != null) {
                 errorWord.errorcount++
@@ -360,6 +361,9 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                     errorwid = wordBean.wid,
                     errorid = wordBean.id,
                     word = wordBean.word,
+                    phonetic0 = wordBean.phonetic0,
+                    trans = wordBean.trans,
+                    sentences = wordBean.sentences,
                     errorcount = 1
                 )
                 repository.insertErrorWord(temp)

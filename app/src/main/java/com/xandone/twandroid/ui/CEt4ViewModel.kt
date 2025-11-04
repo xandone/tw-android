@@ -31,6 +31,7 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
         withContext(Dispatchers.IO) {
             val datas = repository.loadDB(table, page, pageSize).map { base ->
                 WordBean().also { w ->
+                    w.wid = base.wid
                     w.id = base.id
                     w.word = base.word
                     w.phonetic0 = base.phonetic0
