@@ -47,6 +47,7 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
             ) {
                 holder.setText(R.id.word_tv, itemWord?.word)
                 holder.setText(R.id.phonetic0_tv, itemWord?.phonetic0)
+                holder.setGone(R.id.trans_rv, !itemWord?.isSelect!!)
                 val rvAdapter = object : BaseQuickAdapter<TransBean, QuickViewHolder>() {
 
                     override fun onCreateViewHolder(
@@ -128,6 +129,17 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
         lifecycleScope.launch {
             val datas = viewModel.loadData()
             mAdapter.submitList(datas)
+        }
+
+        mAdapter.setOnItemClickListener { _, _, position ->
+            run {
+                val errorWord = mAdapter.getItem(position)
+                if (errorWord != null) {
+                    errorWord.isSelect = !errorWord.isSelect
+                    mAdapter.notifyItemChanged(position)
+                }
+
+            }
         }
     }
 }

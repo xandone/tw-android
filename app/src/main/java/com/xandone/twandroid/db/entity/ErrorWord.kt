@@ -10,7 +10,7 @@ import com.xandone.twandroid.db.DBInfo
  * description:
  */
 @Entity(tableName = DBInfo.TABLE_ERROR_WORD)
-data class ErrorWord(
+class ErrorWord(
     @PrimaryKey(autoGenerate = true)
     val wid: Int = 0,
     //表名称
@@ -22,5 +22,8 @@ data class ErrorWord(
     val trans: String? = null,
     val sentences: String? = null,
     var errorcount: Int
-)
+) {
+    @Transient
+    var isSelect: Boolean = false
+}
 
