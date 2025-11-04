@@ -43,6 +43,7 @@ class CEt4ViewModel(private val repository: WordRepository) : ViewModel() {
                     w.etymology = base.etymology
                 }
             }
+            pagedWordCEt4.clear()
             pagedWordCEt4.addAll(datas)
         }
         mCurrentWordIndex.value = 0

@@ -9,12 +9,13 @@ import com.afollestad.materialdialogs.MaterialDialog
  * description:
  */
 object MdDialogUtils {
-    fun showDialog(ctx: Context) {
+
+    fun showDialog(ctx: Context, message: String, onPositiveClick: () -> Unit) {
         MaterialDialog(ctx).show {
             title(text = "提示")
-            message(text = "错误练习")
+            message(text = message)
             positiveButton(text = "确定") {
-
+                onPositiveClick()
             }
             negativeButton(text = "取消")
         }

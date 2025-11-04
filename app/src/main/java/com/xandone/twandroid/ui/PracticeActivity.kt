@@ -39,6 +39,7 @@ import com.xandone.twandroid.repository.HomeRespository
 import com.xandone.twandroid.repository.WordRepository
 import com.xandone.twandroid.ui.base.BaseActivity
 import com.xandone.twandroid.ui.practice.CEt4ViewModelFactory
+import com.xandone.twandroid.utils.MdDialogUtils
 import com.xandone.twandroid.utils.MyUtils
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -335,6 +336,9 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         } else {
             wordBean.errorWord = ""
             vpAdapter.notifyItemChanged(viewModel.mCurrentWordIndex.value!!, Any())
+            if (viewModel.mCurrentWordIndex.value!! == viewModel.pagedWordCEt4.size - 1) {
+                showRepeatePracticeDaidlog()
+            }
             savePractice2db(wordBean)
         }
     }
@@ -384,6 +388,16 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
                 )
                 repository.insertPracticeWordAndRefreshHomeData(temp)
                 EventBus.getDefault().post(RefreshDbEvent(tablename))
+            }
+        }
+    }
+
+    private fun showRepeatePracticeDaidlog() {
+        MdDialogUtils.showDialog(this, "准备开始默写模式？") {
+            isRepeatMode = true
+            lifecycleScope.launch {
+                viewModel.loadData0(tablename, 1, viewModel.dailyCount)
+                vpAdapter.submitList(viewModel.pagedWordCEt4)
             }
         }
     }
