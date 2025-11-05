@@ -1,9 +1,7 @@
 package com.xandone.twandroid.ui.mine.error
 
-import android.animation.ArgbEvaluator
 import android.content.Context
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -44,6 +42,8 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
 
     private lateinit var mAdapter: BaseQuickAdapter<ErrorWord, QuickViewHolder>
     override fun initView() {
+        mBaseBinding.appBar.visibility = View.GONE
+        mBinding.titleTv1.text = title
         mAdapter = object : BaseQuickAdapter<ErrorWord, QuickViewHolder>() {
             override fun onBindViewHolder(
                 holder: QuickViewHolder,
@@ -141,6 +141,9 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
         }
         lifecycleScope.launch {
             mAdapter.submitList(viewModel.loadData())
+            mBinding.countTv.text = String.format(
+                Locale.getDefault(), "错误总词量：%d", mAdapter.itemCount
+            )
         }
 
         mAdapter.setOnItemClickListener { _, _, position ->
