@@ -45,12 +45,12 @@ abstract class BaseActivity<VB : ViewBinding>(private val initVb: (LayoutInflate
 
     override fun onDestroy() {
         super.onDestroy()
-        if (_binding != null) {
-            _binding = null
-        }
-        if (_baseBinding != null) {
-            _baseBinding = null
-        }
+//        if (_binding != null) {
+//            _binding = null
+//        }
+//        if (_baseBinding != null) {
+//            _baseBinding = null
+//        }
     }
 
     protected open fun isUseDefaultImmersionBar(): Boolean {

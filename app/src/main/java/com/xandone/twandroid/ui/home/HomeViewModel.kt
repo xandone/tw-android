@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
  */
 class HomeViewModel : ViewModel() {
     private val _list = mutableListOf<List<WordHomeEntity>>()
-    lateinit var oneDArray: List<WordHomeEntity>
+    var oneDArray: List<WordHomeEntity> = ArrayList()
     val refreshDB = MutableLiveData<Int>().apply { value = 0 }
 
     suspend fun loadData0() {

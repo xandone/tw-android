@@ -43,9 +43,9 @@ abstract class BaseVBFragment<VB : ViewBinding>(private val initVb: (LayoutInfla
         if (isEventBusRegistered()) {
             EventBus.getDefault().unregister(this)
         }
-        if (_binding != null) {
-            _binding = null
-        }
+//        if (_binding != null) {
+//            _binding = null
+//        }
     }
 
     open fun isEventBusRegistered(): Boolean {
