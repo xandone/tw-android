@@ -39,7 +39,9 @@ class HomeFragment : BaseVBFragment<FragHomeBinding>(FragHomeBinding::inflate) {
     override fun initView(view: View?) {
         homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         lifecycleScope.launch {
-            homeViewModel.loadData0()
+            if (homeViewModel.oneDArray.isEmpty()) {
+                homeViewModel.loadData0()
+            }
 
             homeViewModel.oneDArray.distinctBy { it.category }.forEach {
                 mTitleDataList.add(it.category)

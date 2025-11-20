@@ -142,7 +142,7 @@ class ErrorWordActivity : BaseActivity<ActErrorWordBinding>(ActErrorWordBinding:
         lifecycleScope.launch {
             mAdapter.submitList(viewModel.loadData())
             mBinding.countTv.text = String.format(
-                Locale.getDefault(), "错误总词量：%d", mAdapter.itemCount
+                Locale.getDefault(), "错误总量：%d", mAdapter.itemCount
             )
         }
 

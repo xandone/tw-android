@@ -83,6 +83,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         }
 
         viewModel.mCurrentWordIndex.observe(this) {
+
             mBinding.countTv.text = String.format(
                 Locale.getDefault(),
                 "%d/%d",
@@ -153,7 +154,9 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
         viewModel.tablename = tablename
 
         lifecycleScope.launch {
-            viewModel.loadData0(tablename, 1, viewModel.dailyCount)
+            if (viewModel.pagedWordCEt4.isEmpty()) {
+                viewModel.loadData0(tablename, 1, viewModel.dailyCount)
+            }
 
             vpAdapter = object : BaseQuickAdapter<WordBean, QuickViewHolder>() {
                 override fun onBindViewHolder(
@@ -321,7 +324,7 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             val b: Boolean = viewModel.pagedWordCEt4.groupingBy { it }
                 .eachCount()
                 .any { it.value < 2 }
-            if (b) {
+            if (b && wordBean.word != viewModel.pagedWordCEt4[viewModel.pagedWordCEt4.size - 1].word) {
                 viewModel.mCurrentWord.value?.let { viewModel.pagedWordCEt4.add(it) }
                 vpAdapter.notifyItemInserted(viewModel.pagedWordCEt4.size)
                 mBinding.countTv.text = String.format(
@@ -405,6 +408,5 @@ class PracticeActivity : BaseActivity<ActPracticeLayoutBinding>(ActPracticeLayou
             }
         }
     }
-
 
 }
